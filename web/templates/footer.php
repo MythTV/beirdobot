@@ -17,7 +17,7 @@
 <a href="http://github.com/Beirdo/beirdobot/">BeirdoBot</a>.<br />
 Please use the above link to report any bugs.
 </p>
-
+<br />
 </div>
 </div>
 
