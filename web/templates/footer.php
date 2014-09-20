@@ -18,5 +18,8 @@
 Please use the above link to report any bugs.
 </p>
 
+</div>
+</div>
+
 </body>
 </html>
