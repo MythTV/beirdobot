@@ -88,7 +88,7 @@
 # If Beirdobot is installed outside of the document root (eg. using Alias) then
 # you will need to set this directive to the base URL that Beirdobot is visible
 # from externally.  If you do not, the web server will return 'not found'.  eg.
-#    RewriteBase    /beirdobot
+    RewriteBase    /ircLog
 
 # Turn on the rewrite engine
     RewriteEngine  on
