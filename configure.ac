@@ -138,8 +138,9 @@ AC_LANG_CPLUSPLUS
 # Checks for libraries.
 AC_LANG_C
 AC_CHECK_LIB([pcre], [pcre_config],,[AC_MSG_ERROR(libpcre not installed)])
+MYSQL_CLIENT([5.0.0])
 AC_CHECK_LIB([mysqlclient], [mysql_query],,
-             [AC_MSG_ERROR(libmysqlclient not intalled)],[-lz -lcrypt -lm])
+             [AC_MSG_ERROR(libmysqlclient not intalled)],[$MYSQL_CLIENT_LIBS])
 
 # Check for mysql having --libs_r in mysql_config
 if mysql_config --libs_r > /dev/null ; then
@@ -177,7 +178,7 @@ ENABLE_SWITCH([plugin-dns],[plugin_dns],[PLUGIN_DNS],[--disable-plugin-dns],
               [To enable the compilation of the dns plugin],
               [yes],[no],
 	      [AC_CHECK_LIB([resolv], [res_gethostbyname],,
-	                    [AC_MSG_ERROR(libresolv not installed)])])
+	                    [AC_MSG_ERROR(libresolv not installed)],[$MYSQL_CLIENT_LIBS])])
 
 ENABLE_SWITCH([plugin-fart],[plugin_fart],[PLUGIN_FART],[--disable-plugin-fart],
               [Disable the fart plugin],
@@ -245,7 +246,7 @@ ENABLE_SWITCH([plugin-trac],[plugin_trac],[PLUGIN_TRAC],[--disable-plugin-trac],
               ])
 
 ENABLE_SWITCH([plugin-tracredir],[plugin_tracredir],[PLUGIN_TRACREDIR],
-              [--disable-plugin-trout],[Disable the trout plugin],
+              [--disable-plugin-trac],[Disable the trac plugin],
               [to enable the compilation of the trac redirection plugin],
               [To enable the compilation of the trac redirection plugin],
               [yes],[no])
