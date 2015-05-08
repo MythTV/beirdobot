@@ -94,7 +94,6 @@ void botCmdSearch( IRCServer_t *server, IRCChannel_t *channel, char *who,
     char           *message;
     char           *search;
     char           *chan;
-    bool            privmsg = false;
     struct timeval  start, end;
 
     if( !server || !msg ) {
@@ -102,8 +101,6 @@ void botCmdSearch( IRCServer_t *server, IRCChannel_t *channel, char *who,
     }
 
     if( !channel ) {
-        privmsg = true;
-
         chan = CommandLineParse( msg, &message );
         if( !message ) {
             transmitMsg( server, TX_PRIVMSG, who,
