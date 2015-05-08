@@ -254,7 +254,6 @@ int loadLogentry( Document *doc, unsigned long tb )
     Document::FieldsType       *fields;
     Field                      *field;
     static TCHAR                query[80];
-    int                         len;
     Document::FieldsType::iterator itr;
 
     reader = IndexReader::open(CLUCENE_INDEX_DIR);
@@ -263,7 +262,6 @@ int loadLogentry( Document *doc, unsigned long tb )
     _sntprintf( query, 80, _T("%ld"), tb );
     q = QueryParser::parse(query, _T("timestamp"), &an);
     h = s->search(q);
-    len = h->length();
 #if 0
     LogPrint( LOG_INFO, "Q: %ls  len: %d", q->toString(), len );
 #endif
