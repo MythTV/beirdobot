@@ -402,7 +402,6 @@ void LogItemOutput( void *vitem )
     char                line[MAX_STRING_LENGTH];
     char                usPart[9];
     char                timestamp[TIMESTAMP_MAX];
-    int                 length;
     LinkedListItem_t   *listItem, *next;
     LogFileChain_t     *logFile;
     static char        *unknown = "thread_unknown";
@@ -419,7 +418,6 @@ void LogItemOutput( void *vitem )
               (const struct tm *)&ts );
     snprintf( usPart, 9, ".%06d ", (int)(item->tv.tv_usec) );
     strcat( timestamp, usPart );
-    length = strlen( timestamp );
     
     LinkedListLock( LogList );
     
