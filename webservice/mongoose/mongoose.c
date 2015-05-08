@@ -2136,6 +2136,7 @@ MD5Final(unsigned char digest[16], MD5_CTX *ctx)
 {
 	unsigned count;
 	unsigned char *p;
+    uint32_t *a;
 
 	/* Compute number of bytes mod 64 */
 	count = (ctx->bits[0] >> 3) & 0x3F;
@@ -2164,8 +2165,9 @@ MD5Final(unsigned char digest[16], MD5_CTX *ctx)
 	byteReverse(ctx->in, 14);
 
 	/* Append length in bits and transform */
-	((uint32_t *) ctx->in)[14] = ctx->bits[0];
-	((uint32_t *) ctx->in)[15] = ctx->bits[1];
+    a = (uint32_t *)ctx->in;
+	a[14] = ctx->bits[0];
+	a[15] = ctx->bits[1];
 
 	MD5Transform(ctx->buf, (uint32_t *) ctx->in);
 	byteReverse((unsigned char *) ctx->buf, 4);
