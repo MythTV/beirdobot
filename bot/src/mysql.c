@@ -1131,14 +1131,11 @@ void db_free_auth( AuthData_t *auth )
 void db_set_auth( char *nick, AuthData_t *auth )
 {
     MYSQL_BIND     *data;
-    my_bool         isnull;
 
     if( !nick || !auth ) {
         return;
     }
     
-    isnull = TRUE;
-
     data = (MYSQL_BIND *)malloc( 2 * sizeof(MYSQL_BIND));
     memset( data, 0, 2 * sizeof(MYSQL_BIND) );
 
