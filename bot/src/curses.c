@@ -961,6 +961,7 @@ void cursesAtExit( void )
     nl();
     wrefresh( winFull );
     getmaxyx( winFull, y, x );
+    (void) x; // Silence compiler warning
     wmove( winFull, y, 0 );
     wdeleteln( winFull );
     wrefresh( winFull );
@@ -1297,6 +1298,7 @@ void cursesMenuRegenerate( void )
             menus[i]->posted = FALSE;
         }
     }
+    (void) x; // Silence compiler warning
     pos_menu_cursor( menus[currMenuId+1]->menu );
 }
 
@@ -1539,6 +1541,7 @@ int cursesDetailsKeyhandle( int ch )
         break;
     }
 
+    (void) x; // Silence compiler warning
     return( 0 );
 }
 
@@ -2148,7 +2151,6 @@ void cursesNextPage( void *arg, char *string )
 
 void cursesUpdateFormLabels( void )
 {
-    int                     i;
     LinkedListItem_t       *item;
     CursesField_t          *fieldItem;
     int                     x, y;
@@ -2158,7 +2160,7 @@ void cursesUpdateFormLabels( void )
     getmaxyx( winDetails, y, x );
 
     /* Assumes formList is locked */
-    for( i = 0, item = formList->head; item; item = item->next ) {
+    for( item = formList->head; item; item = item->next ) {
         fieldItem = (CursesField_t *)item;
         if( fieldItem->type == FIELD_LABEL ) {
             starty = fieldItem->starty - (detailsPage * (y-1));
