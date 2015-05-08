@@ -56,7 +56,6 @@ QueueObject_t * QueueCreate( uint32 numElements )
 {
     QueueObject_t *queue;
     QueueItem_t *items;
-    int status;
     uint32 i;
 
     if( numElements == 0 )
@@ -99,16 +98,16 @@ QueueObject_t * QueueCreate( uint32 numElements )
 
     /* Initialize the mutex */
     queue->mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-    status = pthread_mutex_init( queue->mutex, NULL );
+    pthread_mutex_init( queue->mutex, NULL );
 
     /* Initialize the condition variables */
     queue->full = FALSE;
     queue->cNotFull = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
-    status = pthread_cond_init( queue->cNotFull, NULL );
+    pthread_cond_init( queue->cNotFull, NULL );
 
     queue->empty = TRUE;
     queue->cNotEmpty = (pthread_cond_t *)malloc(sizeof(pthread_cond_t));
-    status = pthread_cond_init( queue->cNotEmpty, NULL );
+    pthread_cond_init( queue->cNotEmpty, NULL );
 
     if( !QueueList ) {
         QueueList = LinkedListCreate();
@@ -127,15 +126,13 @@ QueueObject_t * QueueCreate( uint32 numElements )
 
 bool QueueEnqueueItem( QueueObject_t *queue, QueueItem_t item )
 {
-    int status;
-
     if( queue == NULL || item == NULL )
     {
         return( FALSE );
     }
 
     /* Lock the mutex */
-    status = pthread_mutex_lock( queue->mutex );
+    pthread_mutex_lock( queue->mutex );
 
     /* Wait for the appropriate condition variable (unless the condition being
      * waited for is already true).  Loop in case of false signals.
@@ -145,7 +142,7 @@ bool QueueEnqueueItem( QueueObject_t *queue, QueueItem_t item )
         /* Wait for the queue not to be full - note: MUST have the mutex
          * locked when calling pthread_cond_wait
          */
-        status = pthread_cond_wait( queue->cNotFull, queue->mutex );
+        pthread_cond_wait( queue->cNotFull, queue->mutex );
     }
 
     /* OK, at this point, we know there is space on the queue, and that we
@@ -164,7 +161,7 @@ bool QueueEnqueueItem( QueueObject_t *queue, QueueItem_t item )
     QueueConditionUpdate( queue );
 
     /* We are done.  Unlock the mutex. */
-    status = pthread_mutex_unlock( queue->mutex );
+    pthread_mutex_unlock( queue->mutex );
 
     return( TRUE );
 }
@@ -314,13 +311,12 @@ QueueItem_t QueueDequeueItem( QueueObject_t *queue, int32 ms_timeout )
 
 void QueueClear( QueueObject_t *queue, bool freeItems )
 {
-    int status;
     uint32 i;
 
     if( queue != NULL )
     {
         /* Lock the mutex */
-        status = pthread_mutex_lock( queue->mutex );
+        pthread_mutex_lock( queue->mutex );
 
         if( freeItems == TRUE )
         {
@@ -343,7 +339,7 @@ void QueueClear( QueueObject_t *queue, bool freeItems )
         QueueConditionUpdate( queue );
 
         /* We are done.  Unlock the mutex. */
-        status = pthread_mutex_unlock( queue->mutex );
+        pthread_mutex_unlock( queue->mutex );
     }
 }
 
