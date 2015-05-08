@@ -97,7 +97,6 @@ void botCmdFish( IRCServer_t *server, IRCChannel_t *channel, char *who,
     char           *target;
     char           *chan;
     int             len;
-    bool            privmsg = false;
 
     cmd = (FishCmd_t *)tag;
     if( !cmd ) {
@@ -105,7 +104,6 @@ void botCmdFish( IRCServer_t *server, IRCChannel_t *channel, char *who,
     }
 
     if( !channel ) {
-        privmsg = true;
         if( !msg ) {
             message = (char *)malloc(12 + strlen(cmd->command));
             sprintf(message, "Try \"help %s\"", cmd->command);
