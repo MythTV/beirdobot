@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <time.h>
+#include <unistd.h>
 #ifndef WEBSERVICE
 #include "protos.h"
 #include "logging.h"
