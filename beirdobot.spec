@@ -40,5 +40,5 @@ make install DESTDIR=%{buildroot}
 /usr/share/beirdobot/*
 
 %changelog
-* Mon 11 May 2015 Stuart Auchterlonie <stuarta@mythtv.org>
+* Mon May 11 2015 Stuart Auchterlonie <stuarta@mythtv.org>
 - Rewritten spec file, now builds locally and in mock
