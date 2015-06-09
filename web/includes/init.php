@@ -124,7 +124,8 @@ Please set up the db_* environment variables correctly.
 
 // Access denied -- probably means that there is no database
     if ($db->errno == 1045) {
-        require_once 'templates/_db_access_denied.php';
+        $Error = 'Unable to connect to the database, please verify DB credentials';
+        require_once 'templates/_error.php';
         exit;
     }
 
