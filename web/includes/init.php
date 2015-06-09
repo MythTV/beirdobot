@@ -74,16 +74,10 @@
 
 // No database connection info defined?
     if (empty($_SERVER['db_server']) || empty($_SERVER['db_name']) || empty($_SERVER['db_login'])) {
-        $Error = '<p>
-The database environment variables are not correctly set in the<br />
-included .htaccess file.  Please read through the comments included<br />
-in the file and set up the db_* environment variables correctly.
-</p>
-<p>
-Some possible solutions are to make sure that mod_env is enabled<br />
-in httpd.conf, as well as having followed the instructions in the<br />
-README about the AllowOverride settings.
-</p>';
+        $Error = '
+The database environment variables are not correctly set.
+Please set up the db_* environment variables correctly.
+';
         require_once 'templates/_error.php';
         exit;
     }
