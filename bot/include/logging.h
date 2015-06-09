@@ -74,11 +74,11 @@ extern "C" {
 #endif
 
 #define LogPrint(level, format, ...) \
-    LogPrintLine(level, (char *)__FILE__, __LINE__, (char *)__FUNCTION__, \
+    LogPrintLine(level, (char *)__FILE__, __LINE__, (char *)__func__, \
                  (char *)format, ## __VA_ARGS__)
 
 #define LogPrintNoArg(level, string) \
-    LogPrintLine(level, (char *)__FILE__, __LINE__, (char *)__FUNCTION__, \
+    LogPrintLine(level, (char *)__FILE__, __LINE__, (char *)__func__, \
                  (char *)string)
 
 /* Define the external prototype */
