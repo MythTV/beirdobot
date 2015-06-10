@@ -217,8 +217,13 @@ int main ( int argc, char **argv )
     cursesMenuItemAdd( 2, MENU_SYSTEM, "Versions", mainVersions, NULL );
     cursesMenuItemAdd( 2, MENU_SYSTEM, "Reload All", mainReloadAll, NULL );
 
-    /* Add the terminal setting as a version */
-    versionAdd( "TERM", getenv("TERM") );
+    if ( Daemon ) {
+        versionAdd( "TERM", "DAEMON" );
+    } else
+    {
+        /* Add the terminal setting as a version */
+        versionAdd( "TERM", getenv("TERM") );
+    }
 
     /* Print the startup log messages */
     LogBanner();
