@@ -1,6 +1,6 @@
 Name:		beirdobot
 Version:	0.5
-Release:	2%{?dist}
+Release:	4%{?dist}
 Summary:	BeirdoBot
 
 Group:		daemons
@@ -18,8 +18,13 @@ BuildRequires:  ncurses-devel
 
 Requires: lua
 
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
+BuildRequires:  systemd
+
 %description
-BeirdoBot
+BeirdoBot IRC logger
 
 %prep
 %setup -q
@@ -34,14 +39,32 @@ make %{?_smp_mflags}
 
 %install
 make install DESTDIR=%{buildroot}
-mkdir %{buildroot}/usr/share/beirdobot/web/data
+mkdir -p %{buildroot}/usr/share/beirdobot/web/data
+mkdir -p %{buildroot}/%{_unitdir}
+cp bot/beirdobot.service %{buildroot}/%{_unitdir}
+
+%post
+%systemd_post beirdobot.service
+
+%preun
+%systemd_preun beirdobot.service
+
+%postun
+%systemd_postun_with_restart beirdobot.service
 
 %files
 /usr/bin/beirdobot
 /usr/bin/beirdobot-webserviced
-/usr/share/beirdobot/*
+/usr/share/beirdobot
 %attr(0770,root,apache) /usr/share/beirdobot/web/data
+%config %{_unitdir}/beirdobot.service
+
 
 %changelog
+* Wed Jun 10 2015 Stuart Auchterlonie <stuarta@mythtv.org>
+- Fixes for f22 compiler
+- Adding systemd unit script
+- Fix crash when running under systemd
+
 * Mon May 11 2015 Stuart Auchterlonie <stuarta@mythtv.org>
 - Rewritten spec file, now builds locally and in mock
