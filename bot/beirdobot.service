@@ -1,0 +1,12 @@
+[Unit]
+Description=Beirdobot IRC logger
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/beirdobot -D
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
