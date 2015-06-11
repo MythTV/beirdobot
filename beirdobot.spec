@@ -1,6 +1,6 @@
 Name:		beirdobot
 Version:	0.5
-Release:	4%{?dist}
+Release:	6%{?dist}
 Summary:	BeirdoBot
 
 Group:		daemons
@@ -53,14 +53,27 @@ cp bot/beirdobot.service %{buildroot}/%{_unitdir}
 %systemd_postun_with_restart beirdobot.service
 
 %files
+%defattr(755,root,apache)
 /usr/bin/beirdobot
 /usr/bin/beirdobot-webserviced
-/usr/share/beirdobot
+%attr(0770,root,apache) /usr/share/beirdobot/clucene
+/usr/share/beirdobot/plugins
+/usr/share/beirdobot/web/.htaccess
+/usr/share/beirdobot/web/beirdobot.php
 %attr(0770,root,apache) /usr/share/beirdobot/web/data
+/usr/share/beirdobot/web/includes
+/usr/share/beirdobot/web/js
+/usr/share/beirdobot/web/modules
+/usr/share/beirdobot/web/skins
+/usr/share/beirdobot/web/templates
+/usr/share/beirdobot/weblogs
 %config %{_unitdir}/beirdobot.service
 
 
 %changelog
+* Thu Jun 11 2015 Stuart Auchterlonie <stuarta@mythtv.org>
+- Fix default permissions on directories to run as non root user
+
 * Wed Jun 10 2015 Stuart Auchterlonie <stuarta@mythtv.org>
 - Fixes for f22 compiler
 - Adding systemd unit script
