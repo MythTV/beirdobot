@@ -4,6 +4,8 @@ After=network.target
 
 [Service]
 Type=forking
+User=apache
+Group=apache
 ExecStart=/usr/bin/beirdobot -D
 Restart=always
 RestartSec=30
