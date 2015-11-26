@@ -15,7 +15,7 @@ datadir		= @datadir@
 pkglibdir	= ${datadir}/beirdobot
 plugindir	= ${pkglibdir}/plugins
 
-CFLAGS	= -O6 -g -Wall -Werror -I../../include -std=c99 -pedantic
+CFLAGS	= -O6 -g -Wall -I../../include -std=c99 -pedantic
 # -DDEBUG
 CFLAGS	+= $(shell ${MYSQLCFG} --cflags)
 CFLAGS  += $(shell ${BOTNETCFG} --cflags)
@@ -89,11 +89,13 @@ endif
 PLUGIN_TRAC      = @PLUGIN_TRAC@
 ifeq (${PLUGIN_TRAC},yes)
  SRCS  += trac.c
- CFLAGS_trac  = -I/usr/include/subversion-1 -I/usr/include/apr-1
+ CFLAGS_trac  = -I/usr/include/subversion-1
+ CFLAGS_trac += $(shell PKG_CONFIG_PATH=${PKGCONFIGPATH} pkg-config --cflags apr-1)
  CFLAGS_trac += $(shell PKG_CONFIG_PATH=${PKGCONFIGPATH} pkg-config --cflags nxml)
  CFLAGS_trac += $(shell PKG_CONFIG_PATH=${PKGCONFIGPATH} pkg-config --cflags mrss)
  CFLAGS_trac += $(shell ${CURLCFG} --cflags)
- DLLIBS_trac  = -lsvn_client-1 -lapr-1 -laprutil-1
+ DLLIBS_trac  = -lsvn_client-1 -laprutil-1
+ DLLIBS_trac += $(shell PKG_CONFIG_PATH=${PKGCONFIGPATH} pkg-config --libs apr-1)
  DLLIBS_trac += $(shell PKG_CONFIG_PATH=${PKGCONFIGPATH} pkg-config --libs nxml)
  DLLIBS_trac += $(shell PKG_CONFIG_PATH=${PKGCONFIGPATH} pkg-config --libs mrss)
  DLLIBS_trac += $(shell ${CURLCFG} --libs)
