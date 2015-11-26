@@ -23,9 +23,10 @@ SRCCS = clucene.cc
 OBJS  = ${SRCS:.c=.o} ${SRCCS:.cc=.o}
 DEPS  = ${SRCS:.c=.d} ${SRCCS:.cc=.d}
 WEBSERVICE    = beirdobot-webserviced${EXEEXT}
-LIBS  = -lstdc++ -lz -ldl -lpthread -lm
+LIBS  = -lstdc++ -ldl -lpthread -lm
 LIBS += -L ../bot/lib -lclucene-core-static -lclucene-shared-static
 LIBS += -lclucene-contribs-lib-static
+LIBS += -lz
 
 DESTDIR		=
 prefix		= @prefix@
