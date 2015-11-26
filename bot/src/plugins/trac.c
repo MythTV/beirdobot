@@ -45,6 +45,7 @@
 #include <svn_pools.h>
 #include <svn_config.h>
 #include <svn_cmdline.h>
+#include <svn_version.h>
 #include "mrss.h"
 #include <curl/curl.h>
 
