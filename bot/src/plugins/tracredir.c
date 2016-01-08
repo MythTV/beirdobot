@@ -60,8 +60,8 @@ void regexpFuncTrac( IRCServer_t *server, IRCChannel_t *channel, char *who,
     ticketid = regexp_substring( msg, ovector, ovecsize, 1 );
     if (ticketid)
     {
-        message = (char *)malloc(35+strlen(ticketid)+2);
-        sprintf( message, "http://code.mythtv.org/trac/ticket/%s", ticketid );
+        message = (char *)malloc(36+strlen(ticketid)+2);
+        sprintf( message, "https://code.mythtv.org/trac/ticket/%s", ticketid );
         LoggedActionMessage( server, channel, message );
         free(ticketid);
         free(message);
