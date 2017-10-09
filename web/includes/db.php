@@ -13,27 +13,27 @@
  * @uses      includes/errors.php
  * @uses      smart_args() from utils.php
  *
-/**/
+ **/
 
 
 /**
  *  This should already be loaded by the time db.php is, but we should at least
  *  let other people know that this library is required.
-/**/
+ **/
     require_once 'includes/errors.php';
 
 /**
  *  This should already be loaded by the time db.php is, but we should at least
  *  let other people know that this libary is required for the function
  *  smart_args
-/**/
+ **/
     require_once 'includes/utils.php';
 
 /**
  *  This Database class is designed to be a database abstraction later, similar
  *  to perl's DBI library.  It currently only supports mysql, but future
  *  versions may be made to support mysqli, pgsql, etc.
-/**/
+ **/
 class Database {
 
 /** @var resource   Resource handle for this database connection */
@@ -57,7 +57,7 @@ class Database {
 /**
  *  The regular expression used to see if a LIMIT statement exists within
  *  the current query.
-/**/
+ **/
     var $limit_regex = '/((.*)\sLIMIT\s+\d+(?:\s*(?:,|OFFSET)\s*\d+)?)?
                           ((?:\s+PROCEDURE\s+\w+\(.+?\))?
                            (?:\s+FOR\s+UPDATE)?
@@ -68,7 +68,7 @@ class Database {
 /**
  *  The regular expression used to see if a LIMIT statement exists within
  *  the current query.
-/**/
+ **/
     var $limit_regex_replace = '"$2"." LIMIT 1 "."$3"';
 
 /**
@@ -78,7 +78,7 @@ class Database {
  *  @param string $login        Login name to use when connecting
  *  @param string $password     Password to use when connecting
  *  @param string $server       Database server to connect to (Default: localhost)
-/**/
+ **/
     function Database($db_name, $login, $password, $server='localhost') {
     // Connect to the database
     // For now, all we have is mysql -- maybe someday we get other stuff.
@@ -91,7 +91,7 @@ class Database {
  *
  *  @param string $error    The string to set the error message to.  Set to
  *                          false if you want to wipe out the existing errors.
-/**/
+ **/
     function error($error='') {
         if ($error === false) {
             $this->err   = null;
@@ -118,7 +118,7 @@ class Database {
  *  @param mixed  ...       Additional arguments
  *
  *  @return mixed           Statement handle for the current type of database connection
-/**/
+ **/
     function &query($query) {
     // Hack to get query_row and query_assoc working correctly
         $args = array_slice(func_get_args(), 1);
@@ -141,7 +141,7 @@ class Database {
  *  @param mixed  ...       Additional arguments
  *
  *  @return array
-/**/
+ **/
     function query_row($query) {
     // Add a "LIMIT 1" if no limit was specified -- this will speed up queries at least slightly
         $query = preg_replace($this->limit_regex, $this->limit_regex_replace, $query, 1);
@@ -164,7 +164,7 @@ class Database {
  *  @param mixed  ...       Additional arguments
  *
  *  @return assoc
-/**/
+ **/
     function query_assoc($query) {
     // Add a "LIMIT 1" if no limit was specified -- this will speed up queries at least slightly
         $query = preg_replace($this->limit_regex, $this->limit_regex_replace, $query, 1);
@@ -187,7 +187,7 @@ class Database {
  *  @param mixed  ...       Additional arguments
  *
  *  @return mixed
-/**/
+ **/
     function query_col($query) {
     // Add a "LIMIT 1" if no limit was specified -- this will speed up queries at least slightly
         //$query        = preg_replace($this->limit_regex, $this->limit_regex_replace, $query, 1);
@@ -208,7 +208,7 @@ class Database {
  *  @param string $query    The query string
  *
  *  @return Database_Query_mysql
-/**/
+ **/
     function &prepare($query) {
         $new_query = new Database_Query_mysql($this, $query);
         return $new_query;
@@ -217,7 +217,7 @@ class Database {
 /**
  *  Wrapper for the last query statement's insert_id method.
  *  @return int
-/**/
+ **/
     function insert_id() {
         return $this->last_sh->insert_id();
     }
@@ -225,7 +225,7 @@ class Database {
 /**
  *  Wrapper for the last query statement's affected_rows method.
  *  @return int
-/**/
+ **/
     function affected_rows() {
         return $this->last_sh->affected_rows();
     }
@@ -236,7 +236,7 @@ class Database {
  *  On top of normal escaping, this also escapes ? characters so it's safe to
  *  use in other db queries.
  *  @return string
-/**/
+ **/
     function escape($string) {
     // Null?
         if (is_null($string))
@@ -247,14 +247,14 @@ class Database {
 
 /**
  * This function and the next one control if the mysqli_query throws a fatal error or not
-/**/
+ **/
     function enable_fatal_errors() {
         $this->fatal_errors = true;
     }
 
 /**
  * This function disables the fatal error trigger code
-/**/
+ **/
     function disable_fatal_errors() {
         $this->fatal_errors = false;
     }
@@ -263,7 +263,7 @@ class Database {
 
 /**
  * Parent class for all database query types.
-/**/
+ **/
 class Database_Query {
 
 /** @var resource   The related database connection handle */
@@ -289,7 +289,7 @@ class Database_Query {
  *
  *  @param Database $dbh    The parent Database object
  *  @param string   $query  The query string
-/**/
+ **/
     function Database_Query(&$db, $query) {
         $this->dbh             = $db->dbh;
         $this->db              =& $db;
@@ -317,7 +317,7 @@ class Database_Query {
 
 /**
  *  The basic MySQL database query type.
-/**/
+ **/
 class Database_Query_mysql extends Database_Query {
 
 /**
@@ -327,7 +327,7 @@ class Database_Query_mysql extends Database_Query {
  *  @param mixed  ...       Additional arguments
  *
  *  @return result
-/**/
+ **/
     function execute() {
     // Load the function arguments, minus the query itself, which we already extracted
         $args = func_get_args();
@@ -366,12 +366,12 @@ class Database_Query_mysql extends Database_Query {
  *
  *      mysqli_fetch_row($result);   ->  $sh->fetch_row();
  *      mysqli_affected_rows($dbh);  ->  $sh->affected_rows();
-/**/
+ **/
 
 /**
  *  Fetch a single column
  *  @return mixed
-/**/
+ **/
     function fetch_col() {
         list($return) = mysqli_fetch_row($this->sh);
         return $return;
@@ -381,7 +381,7 @@ class Database_Query_mysql extends Database_Query {
  * Fetch a single row
  *  @link http://www.php.net/manual/en/function.mysql-fetch-row.php
  *  @return array
-/**/
+ **/
     function fetch_row() {
         return mysqli_fetch_row($this->sh);
     }
@@ -390,7 +390,7 @@ class Database_Query_mysql extends Database_Query {
  * Fetch a single assoc row
  *  @link http://www.php.net/manual/en/function.mysql-fetch-assoc.php
  *  @return assoc
-/**/
+ **/
     function fetch_assoc() {
         return mysqli_fetch_assoc($this->sh);
     }
@@ -399,7 +399,7 @@ class Database_Query_mysql extends Database_Query {
  * Fetch a single row as an array containing both numeric and assoc fields
  *  @link http://www.php.net/manual/en/function.mysql-fetch-array.php
  *  @return assoc
-/**/
+ **/
     function fetch_array($result_type=MYSQL_BOTH) {
         return mysqli_fetch_array($this->sh, $result_type);
     }
@@ -408,7 +408,7 @@ class Database_Query_mysql extends Database_Query {
  * Fetch a single row as an object
  *  @link http://www.php.net/manual/en/function.mysql-fetch-object.php
  *  @return object
-/**/
+ **/
     function fetch_object() {
         return mysqli_fetch_object($this->sh);
     }
@@ -416,7 +416,7 @@ class Database_Query_mysql extends Database_Query {
 /**
  *  @link http://www.php.net/manual/en/function.mysql-data-seek.php
  *  @return bool
-/**/
+ **/
     function data_seek($row_number) {
         return mysqli_data_seek($this->sh, $row_number);
     }
@@ -424,7 +424,7 @@ class Database_Query_mysql extends Database_Query {
 /**
  *  @link http://www.php.net/manual/en/function.mysql-num-rows.php
  *  @return int
-/**/
+ **/
     function num_rows() {
         return mysqli_num_rows($this->sh);
     }
@@ -432,7 +432,7 @@ class Database_Query_mysql extends Database_Query {
 /**
  *  @link http://www.php.net/manual/en/function.mysql-data-seek.php
  *  @return int
-/**/
+ **/
     function affected_rows() {
         return mysqli_affected_rows($this->dbh);
     }
@@ -440,14 +440,14 @@ class Database_Query_mysql extends Database_Query {
 /**
  *  @link http://www.php.net/manual/en/function.mysql-insert-id.php
  *  @return int
-/**/
+ **/
     function insert_id() {
         return mysqli_insert_id($this->dbh);
     }
 
 /**
  * For anal people like me who like to free up memory manually
-/**/
+ **/
     function finish() {
         if ($this->sh && is_resource($this->sh))
             mysqli_free_result($this->sh);

@@ -10,7 +10,7 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 
 // These are arrays that will contain error messages
     global $Errors, $Warnings;

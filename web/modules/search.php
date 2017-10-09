@@ -9,7 +9,7 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 
 // Search string
     isset($_GET['s']) or $_GET['s'] = $_POST['s'];
@@ -51,7 +51,7 @@
 /**
  * @global  array    $GLOBALS['Results']
  * @name    $Results
-/**/
+ **/
     $Results = array();
 
 // Start the timer

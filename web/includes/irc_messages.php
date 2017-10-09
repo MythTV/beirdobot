@@ -12,7 +12,7 @@
  * @uses        includes/irc_channels.php
  * @uses        $Channels
  *
-/**/
+ **/
 
 // Define some message-related contstants
     define('MSG_NORMAL', 0);
@@ -27,7 +27,7 @@
 
 /**
  * Class to hold an individual IRC message
-/**/
+ **/
 class irc_message {
 
     var $msgid;
@@ -45,7 +45,7 @@ class irc_message {
  * Object constructor
  *
  * @param array $msg_vars   Hash of msg vars from the database.
-/**/
+ **/
     function __construct($msg_vars) {
         global $Channels;
     // Assign the various message vars
@@ -86,14 +86,14 @@ class irc_message {
  * Placeholder constructor for php4 compatibility
  *
  * @param array $msg_vars   Hash of msg vars from the database.
-/**/
+ **/
     function &irc_message($msg_vars) {
         return $this->__construct($msg_vars);
     }
 
 /**
  * Return a color code for this nick.
-/**/
+ **/
     function nick_color() {
         static $cache = array();
         if (empty($cache[$this->nick])) {
@@ -120,7 +120,7 @@ class irc_message {
 /**
  * Sets $this->message from $this->raw_message, and then performs some regex
  * magic to add links, etc.
-/**/
+ **/
     function parse_message() {
         $this->message = html_entities($this->raw_message);
     // Only interact with certain kinds of messages
@@ -166,7 +166,7 @@ class irc_message {
  * @param   string  $link   the link to turn into an href
  *
  * @return  formatted href link
-/**/
+ **/
     function _parse_link($link) {
     // parse_message() runs htmlentities first, so undo a bit of that
         $str = '<a href="'.str_replace('&amp;', '&', $link).'" rel="nofollow">';

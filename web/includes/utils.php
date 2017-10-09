@@ -10,14 +10,14 @@
  *
  * @package     MythWeb
  *
-/**/
+ **/
 
 // One day, in seconds
     define('day_in_seconds',  60 * 60 * 24);
 
 /**
  * Get or set a database setting.
-/**/
+ **/
     function setting($field, $new_value = "old\0old") {
         global $db;
         static $cache = array();
@@ -41,7 +41,7 @@
  *  arrays, and they all show up to the function as one giant list.  This takes
  *  an array containing scalars and arrays of scalars, and returns one clean
  *  array of all values.
-/**/
+ **/
     function smart_args($args) {
         $new_args = array();
     // Not an array
@@ -61,7 +61,7 @@
  * Recursively fixes silly \r\n stuff that some browsers send.
  * Also adds a generic entry for fiends ending in _x or _y to better deal
  * with image inputs.
-/**/
+ **/
     function &fix_crlfxy(&$array) {
         foreach ($array as $key => $val) {
 			if (is_array($val))
@@ -80,7 +80,7 @@
 
 /**
  * Recursively strip slashes from an array (eg. $_GET).
-/**/
+ **/
 	function &fix_magic_quotes(&$array) {
 		foreach ($array as $key => $val) {
 			if (is_array($val))
@@ -101,7 +101,7 @@
 
 /**
  * Print a redirect header and exit
-/**/
+ **/
     function redirect_browser($url) {
         header("Location: $url");
         echo "\n";
@@ -115,14 +115,14 @@
  * @param string $str   String to convert to html entities
  *
  * @return UTF-8 entities for $str
-/**/
+ **/
     function html_entities($str) {
         return htmlentities($str, ENT_COMPAT, 'UTF-8');
     }
 
 /**
  * Returns a sorted list of files in a directory, minus . and ..
-/**/
+ **/
     function get_sorted_files($dir = '.', $regex = '', $negate = false) {
         $list = array();
         $handle = opendir($dir);
@@ -141,7 +141,7 @@
  *
  * @param        string     $file       Name of the file to look for
  * @return       mixed      Full path to the requested file, or null if it isn't found.
-/**/
+ **/
     function find_in_path($file) {
     // Split out each of the search paths
         foreach (explode(PATH_SEPARATOR, ini_get('include_path')) as $path) {
@@ -165,7 +165,7 @@
  *               If a string, the string is returned after being passed through
  *               sprintf() with the current time delta (float) as an argument.
  *               If anything else, the current time differential is returned.
-/**/
+ **/
     function timer($message=null, $index=0) {
         static $cache = array();
     // Get the current time
@@ -193,7 +193,7 @@
  * returns $this or $or_this
  * if $gt is set to true, $this will only be returned if it's > 0
  * if $gt is set to a number, $this will only be returned if it's > $gt
-/**/
+ **/
     function _or($a, $or_this, $gt = false) {
         if ($gt === true)
             return $a > 0 ? $a : $or_this;
@@ -205,7 +205,7 @@
 /**
  * encoded_mailto:
  *  returns <a href="mailto:$email">$title</a>, but hex-encoded for obscurity
-/**/
+ **/
     function encoded_mailto($email, $title=NULL, $obfuscate=false) {
     // Pull off any query string
         if (preg_match('/^(.+?)(\?.*)$/', $email, $match)) {
@@ -236,7 +236,7 @@
 /**
  * DEBUG:
  *  prints out a piece of data
-/**/
+ **/
     function debug($data, $file = false, $force = false) {
         if(!dev_domain && !$force)
             return;

@@ -9,7 +9,7 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 
 
 // Print the page

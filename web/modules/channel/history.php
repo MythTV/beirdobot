@@ -9,7 +9,7 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 
 // Pull up the earliest and latest log entries
     $min = $db->query_col('SELECT timestamp
@@ -31,7 +31,7 @@
 /**
  * @global  array    $GLOBALS['Years']
  * @name    $Years
-/**/
+ **/
     $Years = array();
 
 // Start counting backwards

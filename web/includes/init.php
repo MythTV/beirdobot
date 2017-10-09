@@ -14,7 +14,7 @@
  *
  * @package     MythWeb
  *
-/**/
+ **/
 
 // mod_redirect can do some weird things when php is run in cgi mode
     $keys = preg_grep('/^REDIRECT_/', array_keys($_SERVER));
@@ -89,7 +89,7 @@ Please set up the db_* environment variables correctly.
  *
  * @global  array   $GLOBALS['Path']
  * @name    $Path
-/**/
+ **/
     global $Path;
     $Path = explode('/', preg_replace('/^\/+/',   '',    // Remove leading slashes
                          preg_replace('/[\s]+/', ' ',    // Convert extra whitespace
@@ -113,7 +113,7 @@ Please set up the db_* environment variables correctly.
  *
  * @global  Database    $GLOBALS['db']
  * @name    $db
-/**/
+ **/
     global $db;
 
 // Connect to the database

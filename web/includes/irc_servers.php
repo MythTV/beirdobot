@@ -9,12 +9,12 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 
 /**
  * @global  array   $GLOBALS['Servers']
  * @name    $Servers
-/**/
+ **/
     $Servers = array();
 
 // Load all of the servers
@@ -26,7 +26,7 @@
 
 /**
  * Class to hold the IRC servers that are being logged.
-/**/
+ **/
 class irc_server {
 
     var $serverid;
@@ -44,7 +44,7 @@ class irc_server {
  * Object constructor
  *
  * @param array $server_vars   Hash of server vars from the database.
-/**/
+ **/
     function __construct($server_vars) {
         $this->serverid    = $server_vars['serverid'];
         $this->server      = $server_vars['server'];
@@ -60,7 +60,7 @@ class irc_server {
  * Placeholder constructor for php4 compatibility
  *
  * @param array $server_vars   Hash of server vars from the database.
-/**/
+ **/
     function &irc_server($server_vars) {
         return $this->__construct($server_vars);
     }
@@ -69,7 +69,7 @@ class irc_server {
  * Add an irc_channel object to this server's channel list.
  *
  * @param irc_channel $channel  The channel object to add to the list.
-/**/
+ **/
     function add_channel(&$channel) {
         $this->channels[$channel->chanid] =& $channel;
     }

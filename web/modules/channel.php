@@ -9,12 +9,12 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 
 /**
  * @global  mixed   $GLOBALS['Channel']
  * @name    $Channel
-/**/
+ **/
     $Channel = $Channels[$Path[1]];
 
 // Unknown or empty channel
@@ -31,12 +31,12 @@
 /**
  * @global  int     $GLOBALS['start']
  * @name    $start
-/**/
+ **/
     $start = null;
 /**
  * @global  int     $GLOBALS['end']
  * @name    $end
-/**/
+ **/
     $end = null;
 
 // Date?

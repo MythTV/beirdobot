@@ -13,12 +13,12 @@
  * @uses        includes/irc_servers.php
  * @uses        $Servers
  *
-/**/
+ **/
 
 /**
  * @global  array   $GLOBALS['Channels']
  * @name    $Channels
-/**/
+ **/
     $Channels = array();
 
 // Load all of the servers
@@ -45,7 +45,7 @@
 
 /**
  * Class to hold the IRC channels that are being logged.
-/**/
+ **/
 class irc_channel {
 
     var $chanid;
@@ -65,7 +65,7 @@ class irc_channel {
  * Object constructor
  *
  * @param array $channel_vars   Hash of channel vars from the database.
-/**/
+ **/
     function __construct($channel_vars, $time_vars) {
         global $Servers;
     // Assign the various channel vars
@@ -89,7 +89,7 @@ class irc_channel {
  * Placeholder constructor for php4 compatibility
  *
  * @param array $channel_vars   Hash of channel vars from the database.
-/**/
+ **/
     function &irc_channel($channel_vars,$time_vars) {
         return $this->__construct($channel_vars,$time_vars);
     }
@@ -100,7 +100,7 @@ class irc_channel {
  *
  * @param int $from timestamp of the first message to load
  * @param int $to   timestamp of the last message to load (default: now)
-/**/
+ **/
     function load_messages($from, $to = NULL) {
         global $db;
     // Default the start time to this morning
@@ -130,7 +130,7 @@ class irc_channel {
  * Load all nicks currently in this channel, or those at time $time
  *
  * @param int $time The requested timestamp to pull the user list from.
-/**/
+ **/
     function load_users($time=NULL) {
         global $db;
     // Default the end time to now
@@ -189,7 +189,7 @@ class irc_channel {
  * @param int    $end    The end time
  * @param string $format Format to print out (currently only one option:  table)
  * @param bool   $cache  Cache the results (automatically disabled without both start and end times)
-/**/
+ **/
     function print_log($start, $end, $format='table', $cache=true) {
     // Unknown format
         if ($format != 'table')

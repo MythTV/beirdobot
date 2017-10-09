@@ -9,7 +9,7 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 ?>
 <hr >
 

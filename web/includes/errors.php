@@ -12,7 +12,7 @@
  *
  * @package     Beirdobot
  *
-/**/
+ **/
 
 // Probably already loaded, but it *is* used by this library
     require_once 'includes/errordisplay.php';
@@ -35,7 +35,7 @@
  * it prints a more reassuring message to the viewer of the page and sends an
  * XML-formatted email message to the address stored in error_email, which
  * is defined in conf.php.
-/**/
+ **/
     function Error_Handler ($errno, $errstr, $errfile, $errline, $vars) {
     // Don't die on so-called fatal regex errors
         if (preg_match("/Got error '(.+?)' from regexp/", $errstr, $match)) {
