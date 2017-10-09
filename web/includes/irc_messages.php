@@ -129,7 +129,7 @@ class irc_message {
     // Perform some basic tag and text substitutions
 		static $reg = array(
                         // Add links to url's
-                            '#(\w+://\S+)#e'
+                            '#(\w+://\S+)#'
                             => 'irc_message::_parse_link(strip_quote_slashes(\'$1\'))',
                         // Add links to email addresses (does only a basic scan for valid email address formats)
                             '#((?:
@@ -140,7 +140,7 @@ class irc_message {
                                   (?:\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])
                                   |
                                   (?:[a-z\-0-9]+\.)+[a-z]+
-                              ))#xe'
+                              ))#x'
                                 => 'encoded_mailto(\'$1\')',
                         // french spaces, last one Guillemet-left only if there is something before the space
                             '/(.) (?=\\?|:|;|!|\\302\\273)/' => '\\1&nbsp;\\2',

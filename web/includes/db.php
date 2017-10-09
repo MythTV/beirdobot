@@ -63,7 +63,7 @@ class Database {
                            (?:\s+FOR\s+UPDATE)?
                            (?:\s+LOCK\s+IN\s+SHARE\s+MODE)?
                           )
-                          \s*$/xe';
+                          \s*$/x';
 
 /**
  *  The regular expression used to see if a LIMIT statement exists within
@@ -82,12 +82,8 @@ class Database {
     function Database($db_name, $login, $password, $server='localhost') {
     // Connect to the database
     // For now, all we have is mysql -- maybe someday we get other stuff.
-        $this->dbh = @mysql_connect($server, $login, $password)
+        $this->dbh = @mysqli_connect($server, $login, $password, $db_name)
             or $this->error("Can't connect to the database server.");
-        if ($this->dbh) {
-            @mysql_select_db($db_name)
-                or $this->error("Can't access the database file.");
-        }
     }
 
 /**
@@ -103,8 +99,8 @@ class Database {
             $this->error = null;
         }
         else {
-            $this->err   = $this->dbh ? mysql_error($this->dbh) : mysql_error();
-            $this->errno = $this->dbh ? mysql_errno($this->dbh) : mysql_errno();
+            $this->err   = $this->dbh ? mysqli_error($this->dbh) : mysqli_error();
+            $this->errno = $this->dbh ? mysqli_errno($this->dbh) : mysqli_errno();
             $this->error = ($error ? "$error\n\n" : '')."$this->err [#$this->errno]";
         }
     }
@@ -194,7 +190,7 @@ class Database {
 /**/
     function query_col($query) {
     // Add a "LIMIT 1" if no limit was specified -- this will speed up queries at least slightly
-        $query        = preg_replace($this->limit_regex, $this->limit_regex_replace, $query, 1);
+        //$query        = preg_replace($this->limit_regex, $this->limit_regex_replace, $query, 1);
     // Query and return
         $args         = array_slice(func_get_args(), 1);
         $sh           = $this->query($query, $args);
@@ -246,11 +242,11 @@ class Database {
         if (is_null($string))
             return 'NULL';
     // Just a string
-        return str_replace('?', '\\?', "'".mysql_real_escape_string($string)."'");
+        return str_replace('?', '\\?', "'".mysqli_real_escape_string($string)."'");
     }
 
 /**
- * This function and the next one control if the mysql_query throws a fatal error or not
+ * This function and the next one control if the mysqli_query throws a fatal error or not
 /**/
     function enable_fatal_errors() {
         $this->fatal_errors = true;
@@ -350,14 +346,14 @@ class Database_Query_mysql extends Database_Query {
                 $arg = array_shift($args);
                 $this->last_query .= is_null($arg)
                                         ? 'NULL'
-                                        : "'".mysql_real_escape_string($arg)."'";
+                                        : "'".mysqli_real_escape_string($this->dbh, $arg)."'";
             }
         }
     // Perform the query
-        $this->sh = mysql_query($this->last_query, $this->dbh);
+        $this->sh = mysqli_query($this->dbh, $this->last_query);
         if ($this->sh === false) {
             if ($this->db->fatal_errors)
-                trigger_error('SQL Error: '.mysql_error().' [#'.mysql_errno().']', FATAL);
+                trigger_error('SQL Error: '.mysqli_error($this->dbh).' [#'.mysqli_errno($this->dbh).']', FATAL);
             else
                 $this->db->error();
         }
@@ -368,8 +364,8 @@ class Database_Query_mysql extends Database_Query {
  *  php.  The only difference is that the resource handle gets passed-in
  *  automatically.  eg.
  *
- *      mysql_fetch_row($result);   ->  $sh->fetch_row();
- *      mysql_affected_rows($dbh);  ->  $sh->affected_rows();
+ *      mysqli_fetch_row($result);   ->  $sh->fetch_row();
+ *      mysqli_affected_rows($dbh);  ->  $sh->affected_rows();
 /**/
 
 /**
@@ -377,7 +373,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return mixed
 /**/
     function fetch_col() {
-        list($return) = mysql_fetch_row($this->sh);
+        list($return) = mysqli_fetch_row($this->sh);
         return $return;
     }
 
@@ -387,7 +383,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return array
 /**/
     function fetch_row() {
-        return mysql_fetch_row($this->sh);
+        return mysqli_fetch_row($this->sh);
     }
 
 /**
@@ -396,7 +392,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return assoc
 /**/
     function fetch_assoc() {
-        return mysql_fetch_assoc($this->sh);
+        return mysqli_fetch_assoc($this->sh);
     }
 
 /**
@@ -405,7 +401,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return assoc
 /**/
     function fetch_array($result_type=MYSQL_BOTH) {
-        return mysql_fetch_array($this->sh, $result_type);
+        return mysqli_fetch_array($this->sh, $result_type);
     }
 
 /**
@@ -414,7 +410,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return object
 /**/
     function fetch_object() {
-        return mysql_fetch_object($this->sh);
+        return mysqli_fetch_object($this->sh);
     }
 
 /**
@@ -422,7 +418,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return bool
 /**/
     function data_seek($row_number) {
-        return mysql_data_seek($this->sh, $row_number);
+        return mysqli_data_seek($this->sh, $row_number);
     }
 
 /**
@@ -430,7 +426,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return int
 /**/
     function num_rows() {
-        return mysql_num_rows($this->sh);
+        return mysqli_num_rows($this->sh);
     }
 
 /**
@@ -438,7 +434,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return int
 /**/
     function affected_rows() {
-        return mysql_affected_rows($this->dbh);
+        return mysqli_affected_rows($this->dbh);
     }
 
 /**
@@ -446,7 +442,7 @@ class Database_Query_mysql extends Database_Query {
  *  @return int
 /**/
     function insert_id() {
-        return mysql_insert_id($this->dbh);
+        return mysqli_insert_id($this->dbh);
     }
 
 /**
@@ -454,7 +450,7 @@ class Database_Query_mysql extends Database_Query {
 /**/
     function finish() {
         if ($this->sh && is_resource($this->sh))
-            mysql_free_result($this->sh);
+            mysqli_free_result($this->sh);
         unset($this->sh);
     }
 
