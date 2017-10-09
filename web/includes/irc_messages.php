@@ -128,17 +128,6 @@ class irc_message {
             return;
     // Perform some basic tag and text substitutions
 		static $reg = array(
-                        // Add links to email addresses (does only a basic scan for valid email address formats)
-                            '#((?:
-                                  (?:[^<>\(\)\[\]\\.,;:\s@\"]+(?:\.[^<>\(\)\[\]\\.,;:\s@\"]+)*)
-                                  |
-                                  (?:"[^"]+")
-                                ) @ (?:
-                                  (?:\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])
-                                  |
-                                  (?:[a-z\-0-9]+\.)+[a-z]+
-                              ))#x'
-                                => 'encoded_mailto(\'$1\')',
                         // french spaces, last one Guillemet-left only if there is something before the space
                             '/(.) (?=\\?|:|;|!|\\302\\273)/' => '\\1&nbsp;\\2',
                         // french spaces, Guillemet-right
@@ -153,6 +142,7 @@ class irc_message {
                             '/(\S{80})(?![^<]*?(?:>|<\\/a>))/' => '$1 ',
                            );
     // Perform the replacements
+        // Convert URL's to clickable links
         $this->message = preg_replace_callback(
                 '#(\w+://\S+)#',
                 function ($matches)
@@ -160,6 +150,23 @@ class irc_message {
                         return irc_message::_parse_link(strip_quote_slashes($matches[0]));
                 },
                 $this->message);
+        // Add links to email addresses (does only a basic scan for valid email address formats)
+        $this->message = preg_replace_callback(
+                '#((?:
+                      (?:[^<>\(\)\[\]\\.,;:\s@\"]+(?:\.[^<>\(\)\[\]\\.,;:\s@\"]+)*)
+                      |
+                      (?:"[^"]+")
+                    ) @ (?:
+                      (?:\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])
+                      |
+                      (?:[a-z\-0-9]+\.)+[a-z]+
+                  ))#x',
+                function ($matches)
+                {
+                        return encoded_mailto($matches[0]);
+                },
+                $this->message);
+
         $this->message = preg_replace(array_keys($reg), array_values($reg),
                                       $this->message);
     }
