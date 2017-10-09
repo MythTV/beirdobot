@@ -128,9 +128,6 @@ class irc_message {
             return;
     // Perform some basic tag and text substitutions
 		static $reg = array(
-                        // Add links to url's
-                            '#(\w+://\S+)#'
-                            => 'irc_message::_parse_link(strip_quote_slashes(\'$1\'))',
                         // Add links to email addresses (does only a basic scan for valid email address formats)
                             '#((?:
                                   (?:[^<>\(\)\[\]\\.,;:\s@\"]+(?:\.[^<>\(\)\[\]\\.,;:\s@\"]+)*)
@@ -156,6 +153,13 @@ class irc_message {
                             '/(\S{80})(?![^<]*?(?:>|<\\/a>))/' => '$1 ',
                            );
     // Perform the replacements
+        $this->message = preg_replace_callback(
+                '#(\w+://\S+)#',
+                function ($matches)
+                {
+                        return irc_message::_parse_link(strip_quote_slashes($matches[0]));
+                },
+                $this->message);
         $this->message = preg_replace(array_keys($reg), array_values($reg),
                                       $this->message);
     }
