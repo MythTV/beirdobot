@@ -286,7 +286,7 @@ public:
     void deleteValues(){
         if ( this->values == NULL )
             return;
-	    this->deleteArray();
+        this->deleteArray();
 	}
 	virtual ~TCharConstArray(){
 	    deleteValues();
@@ -304,7 +304,7 @@ public:
     void deleteValues(){
         if ( this->values == NULL )
             return;
-	    this->deleteArray();
+        this->deleteArray();
 	}
 	virtual ~CharConstArray(){
 	    deleteValues();
