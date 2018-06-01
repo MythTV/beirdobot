@@ -177,7 +177,7 @@ ENABLE_SWITCH([plugin-dns],[plugin_dns],[PLUGIN_DNS],[--disable-plugin-dns],
               [to enable the compilation of the dns plugin],
               [To enable the compilation of the dns plugin],
               [yes],[no],
-	      [AC_CHECK_LIB([resolv], [res_gethostbyname],,
+	      [AC_CHECK_LIB([resolv], [gethostbyname],,
 	                    [AC_MSG_ERROR(libresolv not installed)],[$MYSQL_CLIENT_LIBS])])
 
 ENABLE_SWITCH([plugin-fart],[plugin_fart],[PLUGIN_FART],[--disable-plugin-fart],
