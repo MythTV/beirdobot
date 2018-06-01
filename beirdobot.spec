@@ -1,6 +1,6 @@
 Name:		beirdobot
 Version:	0.5
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	BeirdoBot
 
 Group:		daemons
@@ -13,21 +13,24 @@ BuildRequires:  curl-devel
 BuildRequires:  pcre-devel
 BuildRequires:  mysql-devel
 BuildRequires:  mysql-libs
-BuildRequires:  lua-devel
 BuildRequires:  ncurses-devel
-
-Requires: lua
+BuildRequires:  glibc-devel
 
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 BuildRequires:  systemd
 
+Patch0: clucene-narrowing-conversions.patch
+
 %description
 BeirdoBot IRC logger
 
 %prep
 %setup -q
+pushd bot/src/clucene
+%patch0 -p0
+popd
 
 %build
 aclocal
@@ -71,6 +74,10 @@ cp bot/beirdobot.service %{buildroot}/%{_unitdir}
 
 
 %changelog
+* Mon May 21 2018 Stuart Auchterlonie <stuarta@mythtv.org>
+- Rebuild for f28
+- Apply patches to support gcc7 and updated glibc
+
 * Thu Jun 11 2015 Stuart Auchterlonie <stuarta@mythtv.org>
 - Fix default permissions on directories to run as non root user
 
