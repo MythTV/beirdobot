@@ -186,7 +186,7 @@ CL_NS_DEF2(analysis,standard)
 		//if a number is too long, i would say there is no point
 		//storing it, because its going to be the wrong number anyway?
 		//what do people think?
-		return false; 
+		return NULL;
 	}
     str.appendChar(prev);
 
@@ -218,7 +218,7 @@ CL_NS_DEF2(analysis,standard)
     if (!EOS) {
       if (DECIMAL) {
 		if (  str.len >= LUCENE_MAX_WORD_LEN )
-			return false; //read above for rationale
+			return NULL; //read above for rationale
         str.appendChar(ch);
       } else {
         unReadChar();
@@ -247,7 +247,7 @@ CL_NS_DEF2(analysis,standard)
     /* If all we have left is a negative sign, it's not a valid number. */
     if (rightmost == '-') {
       CND_PRECONDITION (str.len == 1, "Number is invalid");
-      return false;
+      return NULL;
     }
 
 	  return setToken(t,&str,tokenType);
