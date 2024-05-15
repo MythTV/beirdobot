@@ -4,10 +4,10 @@ AC_PREREQ([2.71])
 AC_INIT([beirdobot],[GIT],[gjhurlbu@gmail.com])
 AC_CONFIG_AUX_DIR(scripts)
 AC_CONFIG_SRCDIR(bot/src/main.c)
-AM_CONFIG_HEADER(bot/include/config.h)
+AC_CONFIG_HEADERS(bot/include/config.h)
 AC_CANONICAL_TARGET
 
-AM_INIT_AUTOMAKE(beirdobot, "GIT")
+AM_INIT_AUTOMAKE
 
 AC_ARG_VAR(CUT, [location of the cut command])
 AC_PATH_PROG(CUT, cut)
