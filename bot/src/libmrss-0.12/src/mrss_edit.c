@@ -52,7 +52,7 @@ static mrss_error_t __mrss_remove_subdata_item (mrss_item_t *,
 		else if(!value) x=NULL;
 
 #define __MRSS_SET_INTEGER( x ) \
-		x=(int)value;
+		x=value_int;
 
 #define __MRSS_GET_STRING( x ) \
 		string = (char **)value; \
@@ -137,14 +137,14 @@ __mrss_set_channel (mrss_t * data, va_list va)
 {
   mrss_flag_t flag;
   void *value;
+  int value_int;
 
   while ((flag = va_arg (va, mrss_flag_t)))
     {
-      value = va_arg (va, void *);
-
       switch (flag)
 	{
 	case MRSS_FLAG_VERSION:
+          value = va_arg (va, void *);
 	  if ((mrss_version_t) value != MRSS_VERSION_0_91 &&
 	      (mrss_version_t) value != MRSS_VERSION_0_92 &&
 	      (mrss_version_t) value != MRSS_VERSION_2_0)
@@ -154,122 +154,152 @@ __mrss_set_channel (mrss_t * data, va_list va)
 	  break;
 
 	case MRSS_FLAG_TITLE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->title);
 	  break;
 
 	case MRSS_FLAG_DESCRIPTION:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->description);
 	  break;
 
 	case MRSS_FLAG_LINK:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->link);
 	  break;
 
 	case MRSS_FLAG_LANGUAGE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->language);
 	  break;
 
 	case MRSS_FLAG_RATING:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->rating);
 	  break;
 
 	case MRSS_FLAG_COPYRIGHT:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->copyright);
 	  break;
 
 	case MRSS_FLAG_PUBDATE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->pubDate);
 	  break;
 
 	case MRSS_FLAG_LASTBUILDDATE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->lastBuildDate);
 	  break;
 
 	case MRSS_FLAG_DOCS:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->docs);
 	  break;
 
 	case MRSS_FLAG_MANAGINGEDITOR:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->managingeditor);
 	  break;
 
 	case MRSS_FLAG_WEBMASTER:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->webMaster);
 	  break;
 
 	case MRSS_FLAG_GENERATOR:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->generator);
 	  break;
 
 	case MRSS_FLAG_TTL:
+          value_int = va_arg (va, int);
 	  __MRSS_SET_INTEGER (data->ttl);
 	  break;
 
 	case MRSS_FLAG_ABOUT:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->about);
 	  break;
 
 	case MRSS_FLAG_IMAGE_TITLE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->image_title);
 	  break;
 
 	case MRSS_FLAG_IMAGE_URL:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->image_url);
 	  break;
 
 	case MRSS_FLAG_IMAGE_LINK:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->image_link);
 	  break;
 
 	case MRSS_FLAG_IMAGE_WIDTH:
+          value_int = va_arg (va, int);
 	  __MRSS_SET_INTEGER (data->image_width);
 	  break;
 
 	case MRSS_FLAG_IMAGE_HEIGHT:
+          value_int = va_arg (va, int);
 	  __MRSS_SET_INTEGER (data->image_height);
 	  break;
 
 	case MRSS_FLAG_IMAGE_DESCRIPTION:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->image_description);
 	  break;
 
 	case MRSS_FLAG_TEXTINPUT_TITLE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->textinput_title);
 	  break;
 
 	case MRSS_FLAG_TEXTINPUT_DESCRIPTION:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->textinput_description);
 	  break;
 
 	case MRSS_FLAG_TEXTINPUT_NAME:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->textinput_name);
 	  break;
 
 	case MRSS_FLAG_TEXTINPUT_LINK:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->textinput_link);
 	  break;
 
 	case MRSS_FLAG_CLOUD:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->cloud);
 	  break;
 
 	case MRSS_FLAG_CLOUD_DOMAIN:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->cloud_domain);
 	  break;
 
 	case MRSS_FLAG_CLOUD_PORT:
+          value_int = va_arg (va, int);
 	  __MRSS_SET_INTEGER (data->cloud_port);
 	  break;
 
 	case MRSS_FLAG_CLOUD_PATH:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->cloud_path);
 	  break;
 
 	case MRSS_FLAG_CLOUD_REGISTERPROCEDURE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->cloud_registerProcedure);
 	  break;
 
 	case MRSS_FLAG_CLOUD_PROTOCOL:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->cloud_protocol);
 	  break;
 
@@ -362,66 +392,80 @@ __mrss_set_item (mrss_item_t * data, va_list va)
 {
   mrss_flag_t flag;
   void *value;
+  int value_int;
 
   while ((flag = va_arg (va, mrss_flag_t)))
     {
       value = va_arg (va, void *);
-
       switch (flag)
 	{
 	case MRSS_FLAG_ITEM_TITLE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->title);
 	  break;
 
 	case MRSS_FLAG_ITEM_LINK:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->link);
 	  break;
 
 	case MRSS_FLAG_ITEM_DESCRIPTION:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->description);
 	  break;
 
 	case MRSS_FLAG_ITEM_AUTHOR:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->author);
 	  break;
 
 	case MRSS_FLAG_ITEM_COMMENTS:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->comments);
 	  break;
 
 	case MRSS_FLAG_ITEM_PUBDATE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->pubDate);
 	  break;
 
 	case MRSS_FLAG_ITEM_GUID:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->guid);
 	  break;
 
 	case MRSS_FLAG_ITEM_GUID_ISPERMALINK:
+          value_int = va_arg (va, int);
 	  __MRSS_SET_INTEGER (data->guid_isPermaLink);
 	  break;
 
 	case MRSS_FLAG_ITEM_SOURCE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->source);
 	  break;
 
 	case MRSS_FLAG_ITEM_SOURCE_URL:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->source_url);
 	  break;
 
 	case MRSS_FLAG_ITEM_ENCLOSURE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->enclosure);
 	  break;
 
 	case MRSS_FLAG_ITEM_ENCLOSURE_URL:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->enclosure_url);
 	  break;
 
 	case MRSS_FLAG_ITEM_ENCLOSURE_LENGTH:
+          value_int = va_arg (va, int);
 	  __MRSS_SET_INTEGER (data->enclosure_length);
 	  break;
 
 	case MRSS_FLAG_ITEM_ENCLOSURE_TYPE:
+          value = va_arg (va, void *);
 	  __MRSS_SET_STRING (data->enclosure_type);
 	  break;
 

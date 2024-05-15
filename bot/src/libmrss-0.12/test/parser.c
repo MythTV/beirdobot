@@ -34,7 +34,7 @@ main (int argc, char **argv)
   fprintf (stdout, "\nGeneric:\n");
   fprintf (stdout, "\tfile: %s\n", data->file);
   fprintf (stdout, "\tencoding: %s\n", data->encoding);
-  fprintf (stdout, "\tsize: %d\n", data->size);
+  fprintf (stdout, "\tsize: %zd\n", data->size);
 
   fprintf (stdout, "\tversion:");
   switch (data->version)
