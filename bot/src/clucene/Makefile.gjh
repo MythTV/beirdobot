@@ -2,7 +2,8 @@ CMAKE_DEFINES  = "-DBUILD_CONTRIBS:BOOL=ON"
 CMAKE_DEFINES += "-DBUILD_CONTRIBS_LIB:BOOL=ON"
 CMAKE_DEFINES += "-DBUILD_STATIC_LIBRARIES:BOOL=ON"
 CMAKE_DEFINES += "-DCMAKE_INSTALL_PREFIX:PATH=../../.."
-CMAKE_DEFINES += "-DCMAKE_CXX_FLAGS:STRING=-finput-charset=iso-8859-1"
+CMAKE_DEFINES += "-DCMAKE_CXX_FLAGS:STRING=-finput-charset=iso-8859-1 -Wno-narrowing -Wno-deprecated-declarations -Wno-terminate -Wno-conversion-null"
+CMAKE_DEFINES += "-DCMAKE_CXX_STANDARD=11"
 
 all:
 	-mkdir build

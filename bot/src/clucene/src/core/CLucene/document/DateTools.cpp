@@ -8,6 +8,7 @@
 
 #include "DateTools.h"
 #include "CLucene/util/Misc.h"
+#include <ctime>
 
 CL_NS_USE(util)
 CL_NS_DEF(document)

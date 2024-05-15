@@ -15,6 +15,9 @@ CXXFLAGS += -Wno-variadic-macros
 CXXFLAGS_clucene  = -DCLUCENE_INDEX_DIR=\"${indexdir}\" -DWEBSERVICE
 CXXFLAGS_clucene += -I../bot/src/clucene/src/core 
 CXXFLAGS_clucene += -I../bot/src/clucene/src/shared
+CXXFLAGS_clucene += -std=c++11
+CXXFLAGS_clucene += -Wno-narrowing -Wno-deprecated-declarations
+CXXFLAGS_clucene += -Wno-terminate -Wno-conversion-null -Wno-overloaded-virtual
 
 LDFLAGS = -g -rdynamic
 
