@@ -185,9 +185,6 @@
 /* Define if you need to in order for stat and other things to work.  */
 #undef _POSIX_SOURCE
 
-/* Define as the return type of signal handlers (int or void).  */
-#undef RETSIGTYPE
-
 /* Define to the type of arg1 for select(). */
 #undef SELECT_TYPE_ARG1
 
@@ -220,9 +217,6 @@
 /* Define if the `S_IS*' macros in <sys/stat.h> do not work properly.  */
 #undef STAT_MACROS_BROKEN
 
-/* Define if you have the ANSI C header files.  */
-#undef STDC_HEADERS
-
 /* Define on System V Release 4.  */
 #undef SVR4
 
@@ -234,9 +228,6 @@
 
 /* Define if `sys_siglist' is declared by <signal.h>.  */
 #undef SYS_SIGLIST_DECLARED
-
-/* Define if you can safely include both <sys/time.h> and <time.h>.  */
-#undef TIME_WITH_SYS_TIME
 
 /* Define if your <sys/time.h> declares struct tm.  */
 #undef TM_IN_SYS_TIME

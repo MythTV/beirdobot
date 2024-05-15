@@ -99,10 +99,6 @@ ${SYMBOL__T}
 //todo: not being checked for...
 //#cmakedefine _CL_STAT_MACROS_BROKEN
 
-/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
-//not actually used for anything...
-//#cmakedefine _CL_TIME_WITH_SYS_TIME  1 
-
 /* Define that we will be using -fvisibility=hidden, and 
  * make public classes visible using __attribute__ ((visibility("default")))
  */

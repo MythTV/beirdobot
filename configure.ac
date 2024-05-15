@@ -1,11 +1,11 @@
 # Process this file with autoconf to produce a configure script.
-AC_PREREQ(2.59)
+AC_PREREQ([2.71])
 
-AC_INIT(beirdobot, [GIT], [gjhurlbu@gmail.com])
+AC_INIT([beirdobot],[GIT],[gjhurlbu@gmail.com])
 AC_CONFIG_AUX_DIR(scripts)
 AC_CONFIG_SRCDIR(bot/src/main.c)
 AM_CONFIG_HEADER(bot/include/config.h)
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET
 
 AM_INIT_AUTOMAKE(beirdobot, "GIT")
 
@@ -26,7 +26,7 @@ test "x$target_os" = "xcygwin" && _using_cygwin=yes
 AC_MSG_RESULT($_using_cygwin)
 AM_CONDITIONAL([USING_CYGWIN], [test "x$_using_cygwin" = "xyes"])
 
-AC_GNU_SOURCE
+AC_USE_SYSTEM_EXTENSIONS
 
 # Checks for programs.
 AC_PROG_CC
@@ -34,7 +34,11 @@ AC_PROG_CXX
 
 # Checks for header files.
 #AC_HEADER_DIRENT
-#AC_HEADER_STDC
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 #AC_HEADER_SYS_WAIT
 #AC_CHECK_HEADERS([fcntl.h limits.h malloc.h netdb.h netinet/in.h stdlib.h string.h strings.h sys/file.h sys/socket.h sys/time.h unistd.h])
 
@@ -42,7 +46,7 @@ AC_PROG_CXX
 #AC_HEADER_STDBOOL
 AC_C_CONST
 AC_TYPE_SIZE_T
-AC_HEADER_TIME
+
 AC_STRUCT_TM
 #AC_TYPE_INTPTR_T
 
@@ -52,7 +56,7 @@ AC_STRUCT_TM
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_FUNC_SELECT_ARGTYPES
-AC_TYPE_SIGNAL
+
 AC_FUNC_STRNLEN
 #AC_FUNC_STRTOD
 AC_FUNC_VPRINTF
@@ -132,11 +136,11 @@ AS_VAR_POPDEF([ac_Lib])
 
 
 # Check for C++ libraries
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 #AC_CHECK_LIB_PROG([clucene], [_lucene_shutdown();],,[AC_MSG_ERROR(libclucene not installed)],,[#include <CLucene.h>])
 
 # Checks for libraries.
-AC_LANG_C
+AC_LANG([C])
 AC_CHECK_LIB([pcre], [pcre_config],,[AC_MSG_ERROR(libpcre not installed)])
 MYSQL_CLIENT([5.0.0])
 AC_CHECK_LIB([mysqlclient], [mysql_query],,

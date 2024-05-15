@@ -7,16 +7,10 @@
 #ifndef _lucene_document_DateTools_
 #define _lucene_document_DateTools_
 
-#ifdef _CL_TIME_WITH_SYS_TIME
+#if defined(_CL_HAVE_SYS_TIME_H)
 # include <sys/time.h>
-# include <time.h>
-#else
-# if defined(_CL_HAVE_SYS_TIME_H)
-#  include <sys/time.h>
-# else
-#  include <time.h>
-# endif
 #endif
+#include <time.h>
 
 #ifdef _CL_HAVE_SYS_TIMEB_H
 # include <sys/timeb.h>

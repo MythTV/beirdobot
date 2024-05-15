@@ -95,16 +95,10 @@ License Agreement applies to this software.
 #include <sys/resource.h>
 #endif /* HAVE_SETPRIORITY && HAVE_SYS_RESOURCE_H */
 
-#if TIME_WITH_SYS_TIME
-# include <sys/time.h>
-# include <time.h>
-#else /* TIME_WITH_SYS_TIME */
 #if HAVE_SYS_TIME_H
 #include <sys/time.h>
-#else /* HAVE_SYS_TIME_H */
-#include <time.h>
 #endif /* HAVE_SYS_TIME_H */
-#endif /* TIME_WITH_SYS_TIME */
+#include <time.h>
 
 #if HAVE_SYS_FILE_H
 #include <sys/file.h>

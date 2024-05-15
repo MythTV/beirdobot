@@ -51,8 +51,6 @@ ENDIF ( ZLIB_FOUND )
 # test for headers
 ########################################################################
 
-CHECK_INCLUDE_FILES ("sys/time.h;time.h" _CL_TIME_WITH_SYS_TIME)
-
 CHECK_REQUIRED_HEADERS ( stdlib.h stdarg.h stdio.h stddef.h ctype.h algorithm  
 						 functional map vector list set math.h fcntl.h limits.h)
 						 
