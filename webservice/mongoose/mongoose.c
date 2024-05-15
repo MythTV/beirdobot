@@ -4115,7 +4115,7 @@ set_max_threads_option(struct mg_context *ctx, const char *str)
 static bool_t
 set_acl_option(struct mg_context *ctx, const char *acl)
 {
-	struct usa	fake;
+	struct usa	fake = { 0 };
 
 	return (check_acl(ctx, acl, &fake) != -1);
 }
