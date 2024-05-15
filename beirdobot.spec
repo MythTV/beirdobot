@@ -8,10 +8,11 @@ License:	GPL
 URL:		https://github.com/MythTV/beirdobot
 Source0:	beirdobot-%{version}.tar.gz
 
+BuildRequires:  gcc, gcc-c++
 BuildRequires:  automake, cmake
 BuildRequires:  curl-devel
 BuildRequires:  pcre-devel
-BuildRequires:  mysql-devel
+BuildRequires:  mariadb-devel
 BuildRequires:  mysql-libs
 BuildRequires:  ncurses-devel
 BuildRequires:  glibc-devel
@@ -21,16 +22,16 @@ Requires(preun): systemd
 Requires(postun): systemd
 BuildRequires:  systemd
 
-Patch0: clucene-narrowing-conversions.patch
+#Patch0: clucene-narrowing-conversions.patch
 
 %description
 BeirdoBot IRC logger
 
 %prep
 %setup -q
-pushd bot/src/clucene
-%patch0 -p0
-popd
+#pushd bot/src/clucene
+#%patch0 -p0
+#popd
 
 %build
 aclocal
