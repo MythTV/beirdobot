@@ -43,8 +43,9 @@ dnl          FUNCTION declaration et al. Added a LOT of checks and a LOT of
 dnl          fixes.
 dnl	Created at NRL for OPIE 2.1.
 
-AC_INIT(README)
-AC_CONFIG_HEADER(config.h)
+AC_INIT
+AC_CONFIG_SRCDIR([README])
+AC_CONFIG_HEADERS([config.h])
 AC_ARG_ENABLE(access-file, [  --enable-access-file=FILENAME
                           Enable the OPIE access file FILENAME], AC_DEFINE_UNQUOTED(PATH_ACCESS_FILE, "$enable_access_file") echo "Using the access file in $enable_access_file -- don't say we didn't warn you!")
 ACCESS_FILE="$enable_access_file"
@@ -83,9 +84,9 @@ AC_PROG_LN_S
 AC_PROG_RANLIB
 AC_PROG_YACC
 
-AC_AIX
-AC_ISC_POSIX
-AC_MINIX
+AC_USE_SYSTEM_EXTENSIONS
+AC_SEARCH_LIBS([strerror],[cposix])
+AC_USE_SYSTEM_EXTENSIONS
 
 dnl We'd put PATH in these checks, but it turns out that autoconf doesn't
 dnl work as documented when it comes to the colon separator...
@@ -416,31 +417,31 @@ dnl Random checks
 AC_C_CONST
 
 AC_MSG_CHECKING(to see if your compiler can handle void arguments)
-AC_TRY_COMPILE(foo(void) { },, AC_DEFINE(HAVE_VOIDARG) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[foo(void) { }]], [[]])],[AC_DEFINE(HAVE_VOIDARG) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle void return values)
-AC_TRY_COMPILE(void foo() { },, AC_DEFINE(HAVE_VOIDRET) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[void foo() { }]], [[]])],[AC_DEFINE(HAVE_VOIDRET) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle void pointers)
-AC_TRY_COMPILE(foo() { void *bar = (void *)0x42; bar = bar + 1; },, AC_DEFINE(HAVE_VOIDPTR) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[foo() { void *bar = (void *)0x42; bar = bar + 1; }]], [[]])],[AC_DEFINE(HAVE_VOIDPTR) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle ANSI argument lists)
-AC_TRY_COMPILE(int foo(int bar, int baz) { return 0; },, AC_DEFINE(HAVE_ANSIDECL) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[int foo(int bar, int baz) { return 0; }]], [[]])],[AC_DEFINE(HAVE_ANSIDECL) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle ANSI prototypes)
-AC_TRY_COMPILE(extern int foo(int, int);,, AC_DEFINE(HAVE_ANSIPROTO) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[extern int foo(int, int);]], [[]])],[AC_DEFINE(HAVE_ANSIPROTO) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle ANSI variable arguments)
-AC_TRY_COMPILE([#include <stdarg.h>
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdarg.h>
 int foo(int arg, ...) {
 	va_list ap;
 	va_start(ap, arg);
 	va_end(ap);
 	return 0;
-}],, AC_DEFINE(HAVE_ANSISTDARG) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+}]], [[]])],[AC_DEFINE(HAVE_ANSISTDARG) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if you have an ANSI-style sprintf)
-AC_TRY_RUN([#include <stdio.h>
+AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
 int main(argc, argv)
 int argc;
 char *argv[];
@@ -449,7 +450,7 @@ char *argv[];
   int i = 2;
   i += sprintf(buf, "1234");
   return (i == 6) ? 0 : -1;
-}], AC_DEFINE(HAVE_ANSISPRINTF) AC_MSG_RESULT(yes), AC_MSG_RESULT(no), AC_MSG_RESULT(no))
+}]])],[AC_DEFINE(HAVE_ANSISPRINTF) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)],[AC_MSG_RESULT(no)])
 
 dnl Checks for libraries.
 AC_CHECK_LIB(crypt, crypt)
@@ -466,28 +467,28 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 dnl AC_TYPE_UID_T
 dnl AC_TYPE_OFF_T
 dnl AC_TYPE_PID_T
-dnl AC_STRUCT_ST_BLKSIZE
+AC_CHECK_MEMBERS([struct stat.st_blksize])
 dnl AC_STRUCT_TM
 
 AC_MSG_CHECKING(for ut_pid in struct utmp)
-AC_TRY_COMPILE([#include <sys/types.h>
-#include <utmp.h>], [struct utmp foo; return (int)foo.ut_pid;], AC_DEFINE(HAVE_UT_PID) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_pid;]])],[AC_DEFINE(HAVE_UT_PID) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 AC_MSG_CHECKING(for ut_type in struct utmp)
-AC_TRY_COMPILE([#include <sys/types.h>
-#include <utmp.h>], [struct utmp foo; return (int)foo.ut_type;], AC_DEFINE(HAVE_UT_TYPE) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_type;]])],[AC_DEFINE(HAVE_UT_TYPE) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 AC_MSG_CHECKING(for ut_name in struct utmp)
-AC_TRY_COMPILE([#include <sys/types.h>
-#include <utmp.h>], [struct utmp foo; return (int)foo.ut_name[0];], AC_DEFINE(HAVE_UT_NAME) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_name[0];]])],[AC_DEFINE(HAVE_UT_NAME) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 dnl AC_MSG_CHECKING(for ut_user in struct utmp)
-dnl AC_TRY_COMPILE([#include <sys/types.h>
-dnl #include <utmp.h>], [struct utmp foo; return (int)foo.ut_user[0];], AC_DEFINE(HAVE_UT_USER) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+dnl AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
+dnl #include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_user[0];]])],[AC_DEFINE(HAVE_UT_USER) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 AC_MSG_CHECKING(for ut_host in struct utmp)
-AC_TRY_COMPILE([#include <sys/types.h>
-#include <utmp.h>], [struct utmp foo; return (int)foo.ut_host[0];], AC_DEFINE(HAVE_UT_HOST) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_host[0];]])],[AC_DEFINE(HAVE_UT_HOST) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 dnl Checks for library functions.
 dnl AC_PROG_GCC_TRADITIONAL
-AC_TYPE_SIGNAL
+
 AC_CHECK_FUNCS(gettimeofday socket strftime strstr setpriority getttynam setvbuf getspnam endspent setgroups getgroups fpurge setlogin lstat getutxline pututxline usleep)
 
 dnl Libmissing...
@@ -517,26 +518,29 @@ AC_CHECK_FUNC(unsetenv, AC_DEFINE(HAVE_UNSETENV), MISSING="${MISSING}env.o ")
 AC_SUBST(MISSING)
 
 AC_MSG_CHECKING(for nonstandard gettimeofday)
-AC_TRY_COMPILE([
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #if HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif /* HAVE_SYS_TIME_H */
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
-],
-[struct timeval tv;
-gettimeofday(&tv, NULL)], AC_MSG_RESULT(no), AC_MSG_RESULT(maybe) AC_TRY_COMPILE([
-#if HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif /* HAVE_SYS_TIME_H */
-#if HAVE_UNISTD_H
-#include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-],
-[struct timeval tv;
-gettimeofday(&tv)], AC_DEFINE(HAVE_ONE_ARG_GETTIMEOFDAY) AC_MSG_RESULT(yes), AC_MSG_RESULT(no)))
+]], [[struct timeval tv; gettimeofday(&tv, NULL)]])],
+[AC_MSG_RESULT(no)],
+[AC_MSG_RESULT(maybe) ; AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+    #if HAVE_SYS_TIME_H
+    #include <sys/time.h>
+    #endif /* HAVE_SYS_TIME_H */
+    #if HAVE_UNISTD_H
+    #include <unistd.h>
+    #endif /* HAVE_UNISTD_H */
+  ]],
+  [[struct timeval tv; gettimeofday(&tv)]])],
+  [AC_DEFINE(HAVE_ONE_ARG_GETTIMEOFDAY) AC_MSG_RESULT(yes)],
+  [AC_MSG_RESULT(no)])
+])
 
 # Munge out LOCALBIN and LOCALMAN in canonical (no bletch) form
-AC_OUTPUT(configure.munger libmissing/Makefile libopie/Makefile Makefile.munge:Makefile.in)
+AC_CONFIG_FILES([configure.munger libmissing/Makefile libopie/Makefile Makefile.munge:Makefile.in])
+AC_OUTPUT
 sh configure.munger

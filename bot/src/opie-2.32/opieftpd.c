@@ -671,9 +671,9 @@ VOIDRET retrieve FUNCTION((cmd, name), char *cmd AND char *name)
     sprintf(line, cmd, name), name = line;
     fin = ftpd_popen(line, "r"), closefunc = ftpd_pclose;
     st.st_size = -1;
-#if HAVE_ST_BLKSIZE
+#if HAVE_STRUCT_STAT_ST_BLKSIZE
     st.st_blksize = BUFSIZ;
-#endif /* HAVE_ST_BLKSIZE */
+#endif /* HAVE_STRUCT_STAT_ST_BLKSIZE */
   }
   if (fin == NULL) {
     if (errno != 0)
@@ -708,11 +708,11 @@ VOIDRET retrieve FUNCTION((cmd, name), char *cmd AND char *name)
   dout = dataconn(name, st.st_size, "w");
   if (dout == NULL)
     goto done;
-#if HAVE_ST_BLKSIZE
+#if HAVE_STRUCT_STAT_ST_BLKSIZE
   send_data(fin, dout, st.st_blksize);
-#else /* HAVE_ST_BLKSIZE */
+#else /* HAVE_STRUCT_STAT_ST_BLKSIZE */
   send_data(fin, dout, BUFSIZ);
-#endif /* HAVE_ST_BLKSIZE */
+#endif /* HAVE_STRUCT_STAT_ST_BLKSIZE */
   fclose(dout);
   data = -1;
   pdata = -1;
