@@ -309,7 +309,6 @@ void MainDisplayUsage( char *program, char *errorMsg )
 
 void signal_interrupt( int signum, siginfo_t *info, void *secret )
 {
-    extern const char *const    sys_siglist[];
     struct sigaction            sa;
 
     if( pthread_equal( pthread_self(), mainThreadId ) ) {
@@ -318,7 +317,7 @@ void signal_interrupt( int signum, siginfo_t *info, void *secret )
         sa.sa_flags = SA_RESTART;
         sigaction( SIGINT, &sa, NULL );
 
-        LogPrint( LOG_CRIT, "Received signal: %s", sys_siglist[signum] );
+        LogPrint( LOG_CRIT, "Received signal: %s", strsignal(signum) );
         exit( 0 );
     }
 }
@@ -333,7 +332,6 @@ void signal_interrupt( int signum, siginfo_t *info, void *secret )
 
 void signal_everyone( int signum, siginfo_t *info, void *secret )
 {
-    extern const char *const    sys_siglist[];
     SigFunc_t                   sigFunc;
     pthread_t                   myThreadId;
     ucontext_t                 *uc;
@@ -344,7 +342,7 @@ void signal_everyone( int signum, siginfo_t *info, void *secret )
 
 #if 0
     if( pthread_equal( myThreadId, mainThreadId ) ) {
-        LogPrint( LOG_CRIT, "Received signal: %s", sys_siglist[signum] );
+        LogPrint( LOG_CRIT, "Received signal: %s", strsignal(signum) );
     }
 #endif
 
@@ -367,7 +365,6 @@ void signal_everyone( int signum, siginfo_t *info, void *secret )
 
 void signal_death( int signum, siginfo_t *info, void *secret )
 {
-    extern const char *const    sys_siglist[];
     ucontext_t                 *uc;
     struct sigaction            sa;
 
@@ -381,7 +378,7 @@ void signal_death( int signum, siginfo_t *info, void *secret )
     sigaction( SIGILL, &sa, NULL );
     sigaction( SIGFPE, &sa, NULL );
 
-    LogPrint( LOG_CRIT, "Received signal: %s", sys_siglist[signum] );
+    LogPrint( LOG_CRIT, "Received signal: %s", strsignal(signum) );
 #ifdef OLD_IP
     LogPrint( LOG_CRIT, "Faulty Address: %p, from %p", info->si_addr,
                         uc->uc_mcontext.gregs[OLD_IP] );

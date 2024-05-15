@@ -238,7 +238,6 @@ void MainDisplayUsage( char *program, char *errorMsg )
 
 void signal_death( int signum, siginfo_t *info, void *secret )
 {
-    extern const char *const    sys_siglist[];
     ucontext_t                 *uc;
     struct sigaction            sa;
 
@@ -253,7 +252,7 @@ void signal_death( int signum, siginfo_t *info, void *secret )
         sigaction( SIGILL, &sa, NULL );
         sigaction( SIGFPE, &sa, NULL );
 
-        printf( "Received signal: %s\n", sys_siglist[signum] );
+        printf( "Received signal: %s\n", strsignal(signum) );
 #ifdef OLD_IP
         printf( "Faulty Address: %p, from %p\n", info->si_addr,
                             (void *)uc->uc_mcontext.gregs[OLD_IP] );
