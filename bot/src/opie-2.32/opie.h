@@ -159,6 +159,10 @@ struct opie {
 #define OPIE_PRINCIPAL_MAX 32
 #endif	/* OPIE_PRINCIPAL_MAX */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <stdint.h>                                                                                      
 #define UINT4 uint32_t                                                                                   
 
@@ -208,6 +212,13 @@ int  opieverify __P((struct opie *,char *));
 int opiepasswd __P((struct opie *, int, char *, int, char *, char *));
 char *opiereadpass __P((char *, int, int));
 int opielogin __P((char *line, char *name, char *host));
+void opieversion __P(( ));
+
+VOIDRET  opiehashlen __P((int algorithm, VOIDPTR in, VOIDPTR out, int n));
+int  opieinsecure __P(( ));
+VOIDRET  opielogwtmp __P((char *line, char *name, char *host));
+int  opienewseed __P((char *seed));
+int  opieunlock __P(( ));
 
 #if _OPIE
 struct utmp;

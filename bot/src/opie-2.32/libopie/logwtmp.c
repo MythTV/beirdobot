@@ -63,6 +63,7 @@ License Agreement applies to this software.
 #include "opie_cfg.h"
 
 #include <sys/types.h>
+#include <time.h>
 #if HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif /* HAVE_SYS_TIME_H */
@@ -146,7 +147,13 @@ VOIDRET opielogwtmp FUNCTION((line, name, host), char *line AND char *name AND c
 #if HAVE_UT_HOST
     strncpy(ut.ut_host, host, sizeof(ut.ut_host));
 #endif /* HAVE_UT_HOST */
+#if __WORDSIZE_TIME64_COMPAT32
+    time_t now;
+    time(&now);
+    ut.ut_time = now;
+#else
     time(&ut.ut_time);
+#endif
     if (write(fd, (char *) &ut, sizeof(struct utmp)) !=
 	sizeof(struct utmp))
     ftruncate(fd, buf.st_size);
@@ -165,7 +172,14 @@ VOIDRET opielogwtmp FUNCTION((line, name, host), char *line AND char *name AND c
 #if HAVE_ONE_ARG_GETTIMEOFDAY
     gettimeofday(&utx.ut_tv);
 #else /* HAVE_ONE_ARG_GETTIMEOFDAY */
+#if __WORDSIZE_TIME64_COMPAT32
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  utx.ut_tv.tv_sec = tv.tv_sec;
+  utx.ut_tv.tv_usec = tv.tv_usec;
+#else
     gettimeofday(&utx.ut_tv, NULL);
+#endif
 #endif /* HAVE_ONE_ARG_GETTIMEOFDAY */
 #endif /* HAVE_GETTIMEOFDAY */
     if (write(fdx, (char *) &utx, sizeof(struct utmpx)) != sizeof(struct utmpx))

@@ -4,4 +4,9 @@ config.h
 config.log
 config.status
 configure.munger
-
+opiegen
+opieinfo
+opiekey
+opiepasswd
+opietest
+opietest-passed

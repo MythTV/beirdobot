@@ -126,7 +126,7 @@ int opieinsecure FUNCTION_NOARGS
       if (!i && utmp.ut_host[0]) {
 	insecure = 1;
 
-	if (s = strchr(utmp.ut_host, ':')) {
+	if (s = memchr(utmp.ut_host, ':', __UT_HOSTSIZE)) {
 	  int n = s - utmp.ut_host;
 	  if (!n)
 	    insecure = 0;

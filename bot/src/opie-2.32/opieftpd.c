@@ -114,9 +114,7 @@ License Agreement applies to this software.
 
 #include <signal.h>
 #include <fcntl.h>
-#if HAVE_TIME_H
 #include <time.h>
-#endif /* HAVE_TIME_H */
 #if HAVE_PWD_H
 #include <pwd.h>
 #endif /* HAVE_PWD_H */

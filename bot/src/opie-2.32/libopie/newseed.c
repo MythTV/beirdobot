@@ -14,9 +14,7 @@ you didn't get a copy, you may request one from <license@inner.net>.
 */
 
 #include "opie_cfg.h"
-#if HAVE_TIME_H
 #include <time.h>
-#endif /* HAVE_TIME_H */
 #if HAVE_STRING_H
 #include <string.h>
 #endif /* HAVE_STRING_H */

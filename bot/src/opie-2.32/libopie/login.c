@@ -19,6 +19,7 @@ you didn't get a copy, you may request one from <license@inner.net>.
 #include "opie_cfg.h"
 #include <stdio.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include <utmp.h>
 
 #if DOUTMPX
@@ -81,7 +82,14 @@ int opielogin FUNCTION((line, name, host), char *line AND char *name AND char *h
 #ifdef HAVE_ONE_ARG_GETTIMEOFDAY
   gettimeofday(&u.ut_tv);
 #else /* HAVE_ONE_ARG_GETTIMEOFDAY */
+#if __WORDSIZE_TIME64_COMPAT32
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  u.ut_tv.tv_sec = tv.tv_sec;
+  u.ut_tv.tv_usec = tv.tv_usec;
+#else
   gettimeofday(&u.ut_tv, NULL);
+#endif
 #endif /* HAVE_ONE_ARG_GETTIMEOFDAY */
 #else /* DOUTMPX */
   time(&u.ut_time);
