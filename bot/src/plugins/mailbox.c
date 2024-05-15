@@ -27,7 +27,7 @@
 */
 
 /* INCLUDE FILES */
-#define _BSD_SOURCE
+#define _DEFAULT_SOURCE
 #include "environment.h"
 #include "botnet.h"
 #include <pthread.h>
