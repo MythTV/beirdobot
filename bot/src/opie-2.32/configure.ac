@@ -47,10 +47,10 @@ AC_INIT
 AC_CONFIG_SRCDIR([README])
 AC_CONFIG_HEADERS([config.h])
 AC_ARG_ENABLE(access-file, [  --enable-access-file=FILENAME
-                          Enable the OPIE access file FILENAME], AC_DEFINE_UNQUOTED(PATH_ACCESS_FILE, "$enable_access_file") echo "Using the access file in $enable_access_file -- don't say we didn't warn you!")
+                          Enable the OPIE access file FILENAME], AC_DEFINE_UNQUOTED(PATH_ACCESS_FILE, "$enable_access_file", [The path to the access file, if we're going to use it]) echo "Using the access file in $enable_access_file -- don't say we didn't warn you!")
 ACCESS_FILE="$enable_access_file"
 AC_SUBST(ACCESS_FILE)
-AC_ARG_ENABLE(server-md4, [  --enable-server-md4     Use MD4 instead of MD5 for the server], AC_DEFINE(MDX, 4), AC_DEFINE(MDX, 5))
+AC_ARG_ENABLE(server-md4, [  --enable-server-md4     Use MD4 instead of MD5 for the server], AC_DEFINE(MDX, 4, [Defined to the default hash value, always defined]), AC_DEFINE(MDX, 5, [Defined to the default hash value, always defined]))
 
 AC_ARG_ENABLE(user-locking, [  --disable-user-locking  Disable user locking
   --enable-user-locking[=DIR]
@@ -59,7 +59,7 @@ if test "$enable_user_locking" != no;
 then
   if test -z "$enable_user_locking"
   then
-    AC_DEFINE(OPIE_LOCK_DIR, "/etc/opielocks")
+    AC_DEFINE(OPIE_LOCK_DIR, "/etc/opielocks", [Defined to the path of the OPIE lock directory])
     LOCK_DIR="/etc/opielocks"
   else
     AC_DEFINE_UNQUOTED(OPIE_LOCK_DIR, "$enable_user_locking")
@@ -68,14 +68,14 @@ then
 fi
 AC_SUBST(LOCK_DIR)
 
-AC_ARG_ENABLE(retype, [  --enable-retype         Ask users to re-type their secret pass phrases], AC_DEFINE(RETYPE, 1))
-AC_ARG_ENABLE(su-star-check, [  --enable-su-star-check  Refuse to switch to disabled accounts], AC_DEFINE(SU_STAR_CHECK, 1))
-AC_ARG_ENABLE(new-prompts, [  --disable-new-prompts   Use more compatible (but less informative) prompts],, AC_DEFINE(NEW_PROMPTS, 1))
+AC_ARG_ENABLE(retype, [  --enable-retype         Ask users to re-type their secret pass phrases], AC_DEFINE(RETYPE, 1, [Defined if users are to be asked to re-type secret pass phrases]))
+AC_ARG_ENABLE(su-star-check, [  --enable-su-star-check  Refuse to switch to disabled accounts], AC_DEFINE(SU_STAR_CHECK, 1, [Defined if su should not switch to disabled accounts]))
+AC_ARG_ENABLE(new-prompts, [  --disable-new-prompts   Use more compatible (but less informative) prompts],, AC_DEFINE(NEW_PROMPTS, 1, [Defined if new-style prompts are to be used]))
 AC_ARG_ENABLE(insecure-override, [  --enable-insecure-override
-                          Allow users to override insecure checks], AC_DEFINE(INSECURE_OVERRIDE, 1))
-AC_ARG_ENABLE(anonymous-ftp, [  --enable-anonymous-ftp  Enable anonymous FTP support], AC_DEFINE(DOANONYMOUS, 1) echo "Enabling anonymous FTP support in ftp -- don't say we didn't warn you!")
-AC_ARG_ENABLE(utmp, [  --disable-utmp          Disable utmp logging], AC_DEFINE(DISABLE_UTMP, 1) echo "Disabling utmp logging")
-AC_ARG_ENABLE(wtmp, [  --disable-wtmp          Disable wtmp logging], AC_DEFINE(DISABLE_UTMP, 1) echo "Disabling wtmp logging")
+                          Allow users to override insecure checks], AC_DEFINE(INSECURE_OVERRIDE, 1, [Defined if you want to allow users to override the insecure checks]))
+AC_ARG_ENABLE(anonymous-ftp, [  --enable-anonymous-ftp  Enable anonymous FTP support], AC_DEFINE(DOANONYMOUS, 1, [Define if you want the FTP daemon to support anonymous logins.]) echo "Enabling anonymous FTP support in ftp -- don't say we didn't warn you!")
+AC_ARG_ENABLE(utmp, [  --disable-utmp          Disable utmp logging], AC_DEFINE(DISABLE_UTMP, 1, [Defined if you want to disable utmp support]) echo "Disabling utmp logging")
+AC_ARG_ENABLE(wtmp, [  --disable-wtmp          Disable wtmp logging], AC_DEFINE(DISABLE_WTMP, 1, [Defined if you want to disable wtmp support]) echo "Disabling wtmp logging")
 
 dnl Checks for programs.
 AC_PROG_CC
@@ -140,7 +140,8 @@ do
 	done
 	IFS=" "
 done
-AC_DEFINE_UNQUOTED(DEFAULT_PATH, "$default_path")
+IFS="$save_IFS"
+AC_DEFINE_UNQUOTED(DEFAULT_PATH, "$default_path", [The default value of the PATH environment variable])
 AC_MSG_RESULT($default_path)
 
 AC_MSG_CHECKING(for test -e flag)
@@ -201,7 +202,7 @@ else
 	if test "$ls" = 8 -a "$lsg" = 9;
 	then
 		result="yes, with -g"
-		AC_DEFINE(HAVE_LS_G_FLAG)
+		AC_DEFINE(HAVE_LS_G_FLAG, 1, [Define if the /bin/ls command seems to support the -g flag])
 	fi
 fi
 AC_MSG_RESULT($result)
@@ -211,7 +212,7 @@ AC_MSG_CHECKING(for /etc/default/login)
 if test $EXISTS /etc/default/login
 then
 	result=yes
-	AC_DEFINE(HAVE_ETC_DEFAULT_LOGIN)
+	AC_DEFINE(HAVE_ETC_DEFAULT_LOGIN, 1, [Defined if the file /etc/default/login exists (and, presumably, should be looked at by login)])
 else
 	result=no
 fi
@@ -221,7 +222,7 @@ AC_MSG_CHECKING(for /etc/securetty)
 if test $EXISTS /etc/securetty
 then
 	result=yes
-	AC_DEFINE(HAVE_SECURETTY)
+	AC_DEFINE(HAVE_SECURETTY, 1, [Defined if the file /etc/securetty exists (and, presumably, should be looked at by login)])
 else
 	result=no
 fi
@@ -231,7 +232,7 @@ AC_MSG_CHECKING(for /etc/logindevperm)
 if test $EXISTS /etc/logindevperm
 then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(HAVE_LOGIN_PERMFILE, "/etc/logindevperm")
+	AC_DEFINE(HAVE_LOGIN_PERMFILE, "/etc/logindevperm", [Defined to the name of a file that contains a list of files whose permissions and ownerships should be changed on login.])
 else
 	AC_MSG_RESULT(no)
 
@@ -239,7 +240,7 @@ else
 	if test $EXISTS /etc/fbtab
 	then
 		result=yes
-		AC_DEFINE(HAVE_LOGIN_PERMFILE, "/etc/fbtab")
+		AC_DEFINE(HAVE_LOGIN_PERMFILE, "/etc/fbtab", [Defined to the name of a file that contains a list of files whose permissions and ownerships should be changed on login.])
 	else
 		result=no
 	fi
@@ -250,7 +251,7 @@ AC_MSG_CHECKING(for /etc/environment)
 if test $EXISTS /etc/environment
 then
 	AC_MSG_RESULT(yes)
-	AC_DEFINE(HAVE_LOGIN_ENVFILE, "/etc/environment")
+	AC_DEFINE(HAVE_LOGIN_ENVFILE, "/etc/environment", [Defined to the name of a file that contains a list of environment values that should be set on login.])
 else
 	AC_MSG_RESULT(no)
 
@@ -258,7 +259,7 @@ else
 	if test $EXISTS /etc/src.sh
 	then
 		result=yes
-		AC_DEFINE(HAVE_LOGIN_ENVFILE, "/etc/src.sh")
+		AC_DEFINE(HAVE_LOGIN_ENVFILE, "/etc/src.sh", [Defined to the name of a file that contains a list of environment values that should be set on login.])
 	else
 		result=no
 	fi
@@ -269,7 +270,7 @@ AC_MSG_CHECKING(for /etc/shadow)
 if test $EXISTS /etc/shadow
 then
 	result=yes
-	AC_DEFINE(HAVE_ETC_SHADOW)
+	AC_DEFINE(HAVE_ETC_SHADOW, 1, [Defined if the file /etc/shadow exists (and, presumably, should be looked at for shadow passwords)])
 else
 	AC_MSG_RESULT(no)
 
@@ -277,7 +278,7 @@ else
 	if test $EXISTS /etc/security/passwd.adjunct
 	then
 		result=yes
-		AC_DEFINE(HAVE_SUNOS_C2_SHADOW)
+		AC_DEFINE(HAVE_SUNOS_C2_SHADOW, 1, [Defined if the system has SunOS C2 security shadow passwords])
 		LIBOBJS="$LIBOBJS getspnam.o endspent.o"
 	else
 		result=no
@@ -289,7 +290,7 @@ AC_MSG_CHECKING(for /var/adm/sulog)
 if test $EXISTS /var/adm/sulog
 then
 	result=yes
-	AC_DEFINE(HAVE_SULOG)
+	AC_DEFINE(HAVE_SULOG, 1, [Define if the system has the /var/adm/sulog file])
 else
 	result=no
 fi
@@ -309,7 +310,7 @@ then
 	result="not found"
 else
 	result="$mail_spool"
-	AC_DEFINE_UNQUOTED(PATH_MAIL, "$mail_spool")
+	AC_DEFINE_UNQUOTED(PATH_MAIL, "$mail_spool", [The path to the mail spool, if we know it])
 fi
 AC_MSG_RESULT($result)
 
@@ -327,7 +328,7 @@ then
 	result="not found"
 else
 	result="$utmp_path"
-	AC_DEFINE_UNQUOTED(PATH_UTMP_AC, "$utmp_path/utmp")
+	AC_DEFINE_UNQUOTED(PATH_UTMP_AC, "$utmp_path/utmp", [The path to the utmp file, if we know it])
 fi
 AC_MSG_RESULT($result)
 
@@ -343,7 +344,7 @@ done
 if test -z "$utmp_path"
 then
 	result="not found"
-	AC_DEFINE_UNQUOTED(PATH_UTMP_AC, "$utmp_path/utmpx")
+	AC_DEFINE_UNQUOTED(PATH_UTMP_AC, "$utmp_path/utmpx", [The path to the utmpx file, if we know it])
 fi
 AC_MSG_RESULT($result)
 
@@ -361,7 +362,7 @@ then
 	result="not found"
 else
 	result="$wtmp_path"
-	AC_DEFINE_UNQUOTED(PATH_WTMP_AC, "$wtmp_path/wtmp")
+	AC_DEFINE_UNQUOTED(PATH_WTMP_AC, "$wtmp_path/wtmp", [The path to the wtmp file, if we know it])
 fi
 AC_MSG_RESULT($result)
 
@@ -379,7 +380,7 @@ then
 	result="not found"
 else
 	result="$wtmpx_path"
-	AC_DEFINE_UNQUOTED(PATH_WTMPX_AC, "$wtmpx_path/wtmpx")
+	AC_DEFINE_UNQUOTED(PATH_WTMPX_AC, "$wtmpx_path/wtmpx", [The path to the wtmpx file, if we know it])
 fi
 AC_MSG_RESULT($result)
 
@@ -394,7 +395,7 @@ then
 fi
 if test "$result" = yes
 then
-	AC_DEFINE(HAVE_MOTD_IN_PROFILE)
+	AC_DEFINE(HAVE_MOTD_IN_PROFILE, 1, [Defined if the system's profile (/etc/profile) displays the motd file])
 fi
 AC_MSG_RESULT($result)
 
@@ -409,7 +410,7 @@ then
 fi
 if test "$result" = yes
 then
-	AC_DEFINE(HAVE_MAILCHECK_IN_PROFILE)
+	AC_DEFINE(HAVE_MAILCHECK_IN_PROFILE, 1, [Defined if the system's profile (/etc/profile) informs the user of new mail])
 fi
 AC_MSG_RESULT($result)
 
@@ -417,19 +418,19 @@ dnl Random checks
 AC_C_CONST
 
 AC_MSG_CHECKING(to see if your compiler can handle void arguments)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[foo(void) { }]], [[]])],[AC_DEFINE(HAVE_VOIDARG) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[foo(void) { }]], [[]])],[AC_DEFINE(HAVE_VOIDARG, 1, [Define if the compiler can handle void argument lists to functions]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle void return values)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[void foo() { }]], [[]])],[AC_DEFINE(HAVE_VOIDRET) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[void foo() { }]], [[]])],[AC_DEFINE(HAVE_VOIDRET, 1, [Define if the compiler can handle void return "values" from functions]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle void pointers)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[foo() { void *bar = (void *)0x42; bar = bar + 1; }]], [[]])],[AC_DEFINE(HAVE_VOIDPTR) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[foo() { void *bar = (void *)0x42; bar = bar + 1; }]], [[]])],[AC_DEFINE(HAVE_VOIDPTR, 1, [Define if the compiler can handle void pointers to our liking]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle ANSI argument lists)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[int foo(int bar, int baz) { return 0; }]], [[]])],[AC_DEFINE(HAVE_ANSIDECL) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[int foo(int bar, int baz) { return 0; }]], [[]])],[AC_DEFINE(HAVE_ANSIDECL, 1, [Define if the compiler can handle ANSI-style argument lists]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle ANSI prototypes)
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[extern int foo(int, int);]], [[]])],[AC_DEFINE(HAVE_ANSIPROTO) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[extern int foo(int, int);]], [[]])],[AC_DEFINE(HAVE_ANSIPROTO, 1, [Define if the compiler can handle ANSI-style prototypes]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if your compiler can handle ANSI variable arguments)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdarg.h>
@@ -438,7 +439,7 @@ int foo(int arg, ...) {
 	va_start(ap, arg);
 	va_end(ap);
 	return 0;
-}]], [[]])],[AC_DEFINE(HAVE_ANSISTDARG) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+}]], [[]])],[AC_DEFINE(HAVE_ANSISTDARG, 1, [Define if the compiler can handle ANSI-style variable argument lists]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 AC_MSG_CHECKING(to see if you have an ANSI-style sprintf)
 AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <stdio.h>
@@ -450,7 +451,7 @@ char *argv[];
   int i = 2;
   i += sprintf(buf, "1234");
   return (i == 6) ? 0 : -1;
-}]])],[AC_DEFINE(HAVE_ANSISPRINTF) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)],[AC_MSG_RESULT(no)])
+}]])],[AC_DEFINE(HAVE_ANSISPRINTF, 1, [Define if the system has an ANSI-style printf (returns int instead of char *)]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)],[AC_MSG_RESULT(no)])
 
 dnl Checks for libraries.
 AC_CHECK_LIB(crypt, crypt)
@@ -468,23 +469,24 @@ dnl AC_TYPE_UID_T
 dnl AC_TYPE_OFF_T
 dnl AC_TYPE_PID_T
 AC_CHECK_MEMBERS([struct stat.st_blksize])
+
 dnl AC_STRUCT_TM
 
 AC_MSG_CHECKING(for ut_pid in struct utmp)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
-#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_pid;]])],[AC_DEFINE(HAVE_UT_PID) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_pid;]])],[AC_DEFINE(HAVE_UT_PID,1,[Define if there is a ut_pid field in struct utmp]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 AC_MSG_CHECKING(for ut_type in struct utmp)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
-#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_type;]])],[AC_DEFINE(HAVE_UT_TYPE) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_type;]])],[AC_DEFINE(HAVE_UT_TYPE,1,[Define if there is a ut_type field in struct utmp]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 AC_MSG_CHECKING(for ut_name in struct utmp)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
-#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_name[0];]])],[AC_DEFINE(HAVE_UT_NAME) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_name[0];]])],[AC_DEFINE(HAVE_UT_NAME,1,[Define if there is a ut_name field in struct utmp]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 dnl AC_MSG_CHECKING(for ut_user in struct utmp)
 dnl AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
-dnl #include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_user[0];]])],[AC_DEFINE(HAVE_UT_USER) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+dnl #include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_user[0];]])],[AC_DEFINE(HAVE_UT_USER,1,[Define if there is a ut_user field in struct utmp]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 AC_MSG_CHECKING(for ut_host in struct utmp)
 AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/types.h>
-#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_host[0];]])],[AC_DEFINE(HAVE_UT_HOST) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+#include <utmp.h>]], [[struct utmp foo; return (int)foo.ut_host[0];]])],[AC_DEFINE(HAVE_UT_HOST,1,[Define if there is a ut_host field in struct utmp]) AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
 
 dnl Checks for library functions.
 dnl AC_PROG_GCC_TRADITIONAL
@@ -501,10 +503,10 @@ AC_CHECK_FUNC(endutent,, MISSING="${MISSING}endutent.o ")
 AC_CHECK_FUNC(memcpy,, MISSING="${MISSING}memcpy.o "; AC_CHECK_FUNCS(bcopy))
 AC_CHECK_FUNC(memset,, MISSING="${MISSING}memset.o "; AC_CHECK_FUNCS(bzero))
 AC_CHECK_FUNC(getcwd,, MISSING="${MISSING}getcwd.o "; AC_CHECK_FUNCS(getwd))
-AC_CHECK_FUNC(getenv, AC_DEFINE(HAVE_GETENV), MISSING="${MISSING}env.o ")
-AC_CHECK_FUNC(getutline, AC_DEFINE(HAVE_GETUTLINE), MISSING="${MISSING}getutline.o "; AC_CHECK_FUNCS(ttyslot))
+AC_CHECK_FUNC(getenv, AC_DEFINE(HAVE_GETENV, 1, [Define if the system has the getenv function]), MISSING="${MISSING}env.o ")
+AC_CHECK_FUNC(getutline, AC_DEFINE(HAVE_GETUTLINE, 1, [Define if the system has getutline()]), MISSING="${MISSING}getutline.o "; AC_CHECK_FUNCS(ttyslot))
 AC_CHECK_FUNC(pututline,, MISSING="${MISSING}pututline.o "; AC_CHECK_FUNCS(ttyslot))
-AC_CHECK_FUNC(setenv, AC_DEFINE(HAVE_SETENV), MISSING="${MISSING}env.o ")
+AC_CHECK_FUNC(setenv, AC_DEFINE(HAVE_SETENV, 1, [Define if the system has the setenv function]), MISSING="${MISSING}env.o ")
 AC_CHECK_FUNC(setegid,, MISSING="${MISSING}setegid.o "; AC_CHECK_FUNCS(setregid setresgid))
 AC_CHECK_FUNC(seteuid,, MISSING="${MISSING}seteuid.o "; AC_CHECK_FUNCS(setreuid setresuid))
 AC_CHECK_FUNC(setutent,, MISSING="${MISSING}setutent.o ")
@@ -514,7 +516,7 @@ AC_CHECK_FUNC(strrchr,, MISSING="${MISSING}strrchr.o "; AC_CHECK_FUNCS(rindex))
 AC_CHECK_FUNC(strtoul,, MISSING="${MISSING}strtoul.o ")
 AC_CHECK_FUNC(sysconf,, MISSING="${MISSING}sysconf.o "; AC_CHECK_FUNCS(getdtablesize))
 AC_CHECK_FUNC(uname,, MISSING="${MISSING}uname.o "; AC_CHECK_FUNCS(gethostname))
-AC_CHECK_FUNC(unsetenv, AC_DEFINE(HAVE_UNSETENV), MISSING="${MISSING}env.o ")
+AC_CHECK_FUNC(unsetenv, AC_DEFINE(HAVE_UNSETENV, 1, [Define if the system has the unsetenv function]), MISSING="${MISSING}env.o ")
 AC_SUBST(MISSING)
 
 AC_MSG_CHECKING(for nonstandard gettimeofday)
@@ -536,7 +538,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
     #endif /* HAVE_UNISTD_H */
   ]],
   [[struct timeval tv; gettimeofday(&tv)]])],
-  [AC_DEFINE(HAVE_ONE_ARG_GETTIMEOFDAY) AC_MSG_RESULT(yes)],
+  [AC_DEFINE(HAVE_ONE_ARG_GETTIMEOFDAY, 1, [Define if you have a nonstandard gettimeofday() that takes one argument instead of two.]) AC_MSG_RESULT(yes)],
   [AC_MSG_RESULT(no)])
 ])
 
