@@ -240,14 +240,14 @@ static char *
 __nxml_entity_standard_trim (nxml_t * nxml, char *str)
 {
   char *ret, *real;
-  int i, j, q, len;
+  int i, j, len;
 
   len = strlen (str);
 
   if (!(ret = (char *) malloc (sizeof (char) * ((len * 6) + 1))))
     return NULL;
 
-  for (q = i = j = 0; i < len; i++)
+  for (i = j = 0; i < len; i++)
     {
       if (*(str + i) == '&')
 	{
@@ -255,35 +255,30 @@ __nxml_entity_standard_trim (nxml_t * nxml, char *str)
 	    {
 	      ret[j++] = '<';
 	      i += 3;
-	      q = 0;
 	    }
 
 	  else if (!strncmp (str + i, "&gt;", 4))
 	    {
 	      ret[j++] = '>';
 	      i += 3;
-	      q = 0;
 	    }
 
 	  else if (!strncmp (str + i, "&amp;", 5))
 	    {
 	      ret[j++] = '&';
 	      i += 4;
-	      q = 0;
 	    }
 
 	  else if (!strncmp (str + i, "&apos;", 6))
 	    {
 	      ret[j++] = '\'';
 	      i += 5;
-	      q = 0;
 	    }
 
 	  else if (!strncmp (str + i, "&quot;", 6))
 	    {
 	      ret[j++] = '"';
 	      i += 5;
-	      q = 0;
 	    }
 
 	  else if (*(str + i + 1) == '#')
@@ -310,19 +305,16 @@ __nxml_entity_standard_trim (nxml_t * nxml, char *str)
 		j += last;
 
 	      i += k - i;
-	      q = 0;
 	    }
 
 	  else
 	    {
-	      q = 0;
 	      ret[j++] = *(str + i);
 	    }
 	}
 
       else
 	{
-	  q = 0;
 	  ret[j++] = *(str + i);
 	}
     }

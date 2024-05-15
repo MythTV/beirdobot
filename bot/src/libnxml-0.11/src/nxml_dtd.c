@@ -902,7 +902,7 @@ __nxml_dtd_parse_attdef (nxml_t * doc, char *str)
       /* Name S AttType <- */
       a = 0;
       while (*str && *str != 0xa && *str != 0x20 && *str != 0x9 && *str != 0xd
-	     && *str != '(' && a < sizeof (type))
+	     && *str != '(' && a < sizeof (type) - 1)
 	{
 	  type[a] = *str;
 	  str++;
@@ -2321,14 +2321,13 @@ nxml_valid_dtd (nxml_t * nxml, int flag)
 
 	  if (!(system_literal = __nxml_get_value (nxml, &buffer, &size)))
 	    {
-	      free (pubid_literal);
-
 	      if (nxml->priv.func)
 		nxml->priv.
 		  func
 		  ("%s: expected the SystemLiteral element after PubidLiteral '%s' (line %d).\n",
 		   nxml->file ? nxml->file : "", pubid_literal,
 		   nxml->priv.line);
+	      free (pubid_literal);
 	      return NXML_ERR_PARSER;
 	    }
 	}
