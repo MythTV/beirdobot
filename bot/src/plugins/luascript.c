@@ -86,7 +86,7 @@ static int lua_botCmd_add( lua_State *L );
 static int lua_botCmd_remove( lua_State *L );
 int luaopen_mylib( lua_State *L );
 
-static const struct luaL_reg mylib [] = {
+static const struct luaL_Reg mylib [] = {
     {"LogPrint", lua_LogPrint},
     {"transmitMsg", lua_transmitMsg},
     {"LoggedChannelMessage", lua_LoggedChannelMessage},
@@ -466,14 +466,9 @@ bool luascriptLoadItem( Luascript_t *luascript )
     LogPrint( LOG_NOTICE, "Loading LUA script %s from %s", luascript->name, 
                           scriptfile );
 
-    L = lua_open();
+    L = luaL_newstate();
     luascript->L = L;
-    luaopen_base(L);
-    luaopen_table(L);
-    luaopen_io(L);
-    luaopen_string(L);
-    luaopen_math(L);
-    luaopen_mylib(L);
+    luaL_openlibs(L);
 
     retval = luaL_loadfile(L, scriptfile);
     if( retval ) {
@@ -652,7 +647,7 @@ static int lua_transmitMsg( lua_State *L )
     char           *who, *message;
 
     server = (IRCServer_t *)lua_touserdata(L, 1);
-    type = (TxType_t)luaL_checkint(L, 2);
+    type = (TxType_t)luaL_checkinteger(L, 2);
     who = (char *)luaL_checkstring(L, 3);
     message = (char *)luaL_checkstring(L, 4);
 
@@ -900,7 +895,9 @@ static int lua_botCmd_remove( lua_State *L )
 
 int luaopen_mylib( lua_State *L )
 {
-    luaL_openlib(L, "beirdobot", mylib, 0);
+    luaL_setfuncs(L, mylib, 0);
+    lua_pushvalue(L, -1);
+    lua_setglobal(L,"beirdobot" );
     return( 1 );
 }
 

@@ -7434,9 +7434,9 @@ if test "$ac_cv_option_plugin_luascript" = "yes" ; then
 
 printf "%s\n" "#define PLUGIN_LUASCRIPT 1" >>confdefs.h
 
-	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for library containing lua_pcall" >&5
-printf %s "checking for library containing lua_pcall... " >&6; }
-if test ${ac_cv_search_lua_pcall+y}
+	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for library containing lua_pcallk" >&5
+printf %s "checking for library containing lua_pcallk... " >&6; }
+if test ${ac_cv_search_lua_pcallk+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
@@ -7447,11 +7447,11 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* Override any GCC internal prototype to avoid an error.
    Use char because int might match the return type of a GCC
    builtin and then its argument prototype would still apply.  */
-char lua_pcall ();
+char lua_pcallk ();
 int
 main (void)
 {
-return lua_pcall ();
+return lua_pcallk ();
   ;
   return 0;
 }
@@ -7466,27 +7466,27 @@ do
   fi
   if ac_fn_c_try_link "$LINENO"
 then :
-  ac_cv_search_lua_pcall=$ac_res
+  ac_cv_search_lua_pcallk=$ac_res
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext
-  if test ${ac_cv_search_lua_pcall+y}
+  if test ${ac_cv_search_lua_pcallk+y}
 then :
   break
 fi
 done
-if test ${ac_cv_search_lua_pcall+y}
+if test ${ac_cv_search_lua_pcallk+y}
 then :
 
 else $as_nop
-  ac_cv_search_lua_pcall=no
+  ac_cv_search_lua_pcallk=no
 fi
 rm conftest.$ac_ext
 LIBS=$ac_func_search_save_LIBS
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_lua_pcall" >&5
-printf "%s\n" "$ac_cv_search_lua_pcall" >&6; }
-ac_res=$ac_cv_search_lua_pcall
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_lua_pcallk" >&5
+printf "%s\n" "$ac_cv_search_lua_pcallk" >&6; }
+ac_res=$ac_cv_search_lua_pcallk
 if test "$ac_res" != no
 then :
   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
@@ -7495,9 +7495,9 @@ else $as_nop
   as_fn_error $? "liblua not installed" "$LINENO" 5
 fi
 
-	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for library containing luaL_loadfile" >&5
-printf %s "checking for library containing luaL_loadfile... " >&6; }
-if test ${ac_cv_search_luaL_loadfile+y}
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for library containing luaL_loadfilex" >&5
+printf %s "checking for library containing luaL_loadfilex... " >&6; }
+if test ${ac_cv_search_luaL_loadfilex+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
@@ -7508,11 +7508,11 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* Override any GCC internal prototype to avoid an error.
    Use char because int might match the return type of a GCC
    builtin and then its argument prototype would still apply.  */
-char luaL_loadfile ();
+char luaL_loadfilex ();
 int
 main (void)
 {
-return luaL_loadfile ();
+return luaL_loadfilex ();
   ;
   return 0;
 }
@@ -7527,27 +7527,27 @@ do
   fi
   if ac_fn_c_try_link "$LINENO"
 then :
-  ac_cv_search_luaL_loadfile=$ac_res
+  ac_cv_search_luaL_loadfilex=$ac_res
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext
-  if test ${ac_cv_search_luaL_loadfile+y}
+  if test ${ac_cv_search_luaL_loadfilex+y}
 then :
   break
 fi
 done
-if test ${ac_cv_search_luaL_loadfile+y}
+if test ${ac_cv_search_luaL_loadfilex+y}
 then :
 
 else $as_nop
-  ac_cv_search_luaL_loadfile=no
+  ac_cv_search_luaL_loadfilex=no
 fi
 rm conftest.$ac_ext
 LIBS=$ac_func_search_save_LIBS
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_luaL_loadfile" >&5
-printf "%s\n" "$ac_cv_search_luaL_loadfile" >&6; }
-ac_res=$ac_cv_search_luaL_loadfile
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_luaL_loadfilex" >&5
+printf "%s\n" "$ac_cv_search_luaL_loadfilex" >&6; }
+ac_res=$ac_cv_search_luaL_loadfilex
 if test "$ac_res" != no
 then :
   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"

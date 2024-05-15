@@ -195,9 +195,9 @@ ENABLE_SWITCH([plugin-luascript],[plugin_luascript],[PLUGIN_LUASCRIPT],
               [to enable the compilation of the luascript plugin],
               [To enable the compilation of the luascript plugin],
               [yes],[no],
-              [AC_SEARCH_LIBS([lua_pcall],[lua50 lua],,
+              [AC_SEARCH_LIBS([lua_pcallk],[lua50 lua],,
                               [AC_MSG_ERROR(liblua not installed)])
-	       AC_SEARCH_LIBS([luaL_loadfile],[lualib50 lualib],,
+	       AC_SEARCH_LIBS([luaL_loadfilex],[lualib50 lualib],,
                               [AC_MSG_ERROR(liblualib not installed)])])
 
 ENABLE_SWITCH([plugin-mailbox],[plugin_mailbox],[PLUGIN_MAILBOX],
