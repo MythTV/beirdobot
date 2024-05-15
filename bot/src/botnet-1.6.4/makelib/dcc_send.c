@@ -41,7 +41,7 @@ void *ThreadProc_AcceptSend(void *);
 
 bool BN_CreateSendSocket(BN_PSend Send, const char *Addr, int Port)
 {
-  int len;
+  socklen_t len;
 
   Send->Socket = socket(AF_INET,SOCK_STREAM,IPPROTO_IP);
   if( Send->Socket == -1 ) {
@@ -136,7 +136,7 @@ void *ThreadProc_SendRequestSend(void *Info)
   int Flg,Timeout;
   char Msg[150];
   struct sockaddr_in SockAddrIn;
-  int size;
+  socklen_t size;
   void *Saf,*Saf2;
   struct stat statbuf;
   BN_PTempoStruct TS;
@@ -173,8 +173,9 @@ void *ThreadProc_SendRequestSend(void *Info)
     if(Send->CB.OnDCCSendClosed != NULL)
       Send->CB.OnDCCSendClosed(I,Send,DCC_FAILED);
     CLOSE_SOCKET_FUNC(Send->Socket);
+    Flg = Send->Flags;
     free(Send);
-    if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -198,8 +199,9 @@ void *ThreadProc_SendRequestSend(void *Info)
     if(Send->CB.OnDCCSendClosed != NULL)
       Send->CB.OnDCCSendClosed(I,Send,DCC_FAILED);
     CLOSE_SOCKET_FUNC(Send->Socket);
+    Flg = Send->Flags;
     free(Send);
-    if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -212,8 +214,9 @@ void *ThreadProc_SendRequestSend(void *Info)
     if(Send->CB.OnDCCSendClosed != NULL)
       Send->CB.OnDCCSendClosed(I,Send,DCC_FAILED);
     CLOSE_SOCKET_FUNC(Send->Socket);
+    Flg = Send->Flags;
     free(Send);
-    if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -230,10 +233,11 @@ void *ThreadProc_SendRequestSend(void *Info)
     if(Send->CB.OnDCCSendClosed != NULL)
       Send->CB.OnDCCSendClosed(I,Send,DCC_FAILED);
     CLOSE_SOCKET_FUNC(Send->Socket);
+    Flg = Send->Flags;
     free(Send);
     I->CB.OnError = Saf;
     I->User = Saf2;
-    if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -284,6 +288,7 @@ void *ThreadProc_AcceptSend(void *Info)
   BN_PTempoStruct TS;
   BN_PInfo I;
   BN_PSend Send;
+  int Flags;
 
   TS = (BN_PTempoStruct)Info;
   I = TS->I;
@@ -312,8 +317,9 @@ void *ThreadProc_AcceptSend(void *Info)
     if(Send->CB.OnDCCGetClosed != NULL)
       Send->CB.OnDCCGetClosed(I,Send,DCC_FAILED);
     CLOSE_SOCKET_FUNC(Send->Socket);
+    Flags = Send->Flags;
     free(Send);
-    if((Send->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -341,7 +347,7 @@ void BN_CreateDCCSendProcess(BN_PInfo I,BN_PSend Send,const int TimeOut)
 {
   char *S;
   int sock;
-  int len;
+  socklen_t len;
   FILE *File;
   int res;
   unsigned long int sent;

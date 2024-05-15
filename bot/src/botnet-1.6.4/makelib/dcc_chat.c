@@ -37,7 +37,7 @@ void *ThreadProc_Accept(void *);
 
 bool BN_CreateChatSocket(BN_PChat Chat,const char *Addr,int Port)
 {
-  int len;
+  socklen_t len;
 
   Chat->Socket = socket(AF_INET,SOCK_STREAM,IPPROTO_IP);
   if( Chat->Socket == -1 ) {
@@ -129,7 +129,7 @@ void *ThreadProc_SendRequest(void *Info)
   int Flg;
   char Msg[150];
   struct sockaddr_in SockAddrIn;
-  int size;
+  socklen_t size;
   void *Saf,*Saf2;
   BN_PTempoStruct TS;
 
@@ -163,8 +163,9 @@ void *ThreadProc_SendRequest(void *Info)
   if(getsockname(I->Socket,(struct sockaddr *)&SockAddrIn,&size) == -1)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
+    Flg = Chat->Flags;
     free(Chat);
-    if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -175,8 +176,9 @@ void *ThreadProc_SendRequest(void *Info)
   if(listen(Chat->Socket,0) == -1)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
+    Flg = Chat->Flags;
     free(Chat);
-    if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -191,10 +193,11 @@ void *ThreadProc_SendRequest(void *Info)
   if(I->User != 0)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
+    Flg = Chat->Flags;
     free(Chat);
     I->CB.OnError = Saf;
     I->User = Saf2;
-    if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flg & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -245,6 +248,7 @@ void *ThreadProc_Accept(void *Info)
   BN_PTempoStruct TS;
   BN_PInfo I;
   BN_PChat Chat;
+  int Flags;
 
   TS = (BN_PTempoStruct)Info;
   I = TS->I;
@@ -269,8 +273,9 @@ void *ThreadProc_Accept(void *Info)
   if(connect(Chat->Socket, (struct sockaddr *)&Chat->SAddr, sizeof(Chat->SAddr)) == -1)
   {
     CLOSE_SOCKET_FUNC(Chat->Socket);
+    Flags = Chat->Flags;
     free(Chat);
-    if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -320,11 +325,13 @@ char *BN_WaitForDCCChatMessage(BN_PInfo I,BN_PChat Chat)
   char *buf,*pos;
   int blocking=0;
   int ajout=2;
+  int Flags;
 
   if(Chat->Status == CHAT_CLOSED)
   {
+  Flags = Chat->Flags;
     free(Chat);
-    if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+    if((Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
       EXIT_PROCESS_FUNC(1);
     else
       EXIT_THREAD_FUNC 1);
@@ -384,8 +391,9 @@ char *BN_WaitForDCCChatMessage(BN_PInfo I,BN_PChat Chat)
         {
           if(Chat->Status != CHAT_CLOSED)
             BN_CloseDCCChat(I,Chat);
+          Flags = Chat->Flags;
           free(Chat);
-          if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+          if((Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
             EXIT_PROCESS_FUNC(1);
           else
             EXIT_THREAD_FUNC 1);
@@ -405,8 +413,9 @@ char *BN_WaitForDCCChatMessage(BN_PInfo I,BN_PChat Chat)
       {
         if(Chat->Status != CHAT_CLOSED)
           BN_CloseDCCChat(I,Chat);
+        Flags = Chat->Flags;
         free(Chat);
-        if((Chat->Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
+        if((Flags & PROCESS_NEW_PROCESS) == PROCESS_NEW_PROCESS)
           EXIT_PROCESS_FUNC(1);
         else
           EXIT_THREAD_FUNC 1);
@@ -422,7 +431,7 @@ void BN_CreateDCCChatProcess(BN_PInfo I,BN_PChat Chat)
 {
   char *S;
   int sock;
-  int len;
+  socklen_t len;
 
   while(Chat->Status == CHAT_REQUEST)
   {

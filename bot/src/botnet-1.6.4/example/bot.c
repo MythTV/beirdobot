@@ -7,6 +7,7 @@
 #include "../makelib/botnet.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #ifdef __unix__
 #include <unistd.h>
 #include <sys/wait.h>
@@ -67,7 +68,7 @@ void ProcOnDCCTalk(BN_PInfo I,BN_PChat Chat,const char Msg[])
     BN_SendPrivateMessage(I,"ze_killer","Hi there, how do you feel right now ?");
   }
   else
-    printf("Bad value in OnDCCTalk : %d\n",(int)Chat->User);
+    printf("Bad value in OnDCCTalk : %p\n",Chat->User);
 }
 
 
