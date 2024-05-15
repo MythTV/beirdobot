@@ -506,7 +506,7 @@ MYSQL_RES *db_query( const char *query, MYSQL_BIND *args, int arg_count,
                 ProtectedDataUnlock( sql );
                 return( NULL );
             }
-            strncat( sqlbuf, "NULL", 4 );
+            strcpy( sqlbuf, "NULL" );
             buflen -= len;
         } else {
             switch( args->buffer_type ) {
