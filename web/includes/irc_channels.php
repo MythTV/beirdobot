@@ -191,6 +191,8 @@ class irc_channel {
  * @param bool   $cache  Cache the results (automatically disabled without both start and end times)
  **/
     function print_log($start, $end, $format='table', $cache=true) {
+        $fp = false;
+
     // Unknown format
         if ($format != 'table')
             return "Unknown format:  $format";

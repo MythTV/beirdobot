@@ -36,7 +36,7 @@
  * XML-formatted email message to the address stored in error_email, which
  * is defined in conf.php.
  **/
-    function Error_Handler ($errno, $errstr, $errfile, $errline, $vars) {
+    function Error_Handler ($errno, $errstr, $errfile, $errline) {
     // Don't die on so-called fatal regex errors
         if (preg_match("/Got error '(.+?)' from regexp/", $errstr, $match)) {
             add_error('Regular Expression Error:  '.$match[1]);
@@ -99,9 +99,6 @@
                 print_r($_SERVER);
             }
         ### stupid recursive objects break non-cutting-edge versions of php
-            #echo "\n==========================================================================\n\n"
-            #    ."vars:\n";
-            #print_r($vars);
         // Gather the results into a string
             $err .= ob_get_contents();
             ob_end_clean();

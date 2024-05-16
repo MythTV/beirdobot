@@ -79,7 +79,7 @@ class Database {
  *  @param string $password     Password to use when connecting
  *  @param string $server       Database server to connect to (Default: localhost)
  **/
-    function Database($db_name, $login, $password, $server='localhost') {
+    function __construct($db_name, $login, $password, $server='localhost') {
     // Connect to the database
     // For now, all we have is mysql -- maybe someday we get other stuff.
         $this->dbh = @mysqli_connect($server, $login, $password, $db_name)
@@ -290,7 +290,7 @@ class Database_Query {
  *  @param Database $dbh    The parent Database object
  *  @param string   $query  The query string
  **/
-    function Database_Query(&$db, $query) {
+    function __construct(&$db, $query) {
         $this->dbh             = $db->dbh;
         $this->db              =& $db;
         $this->num_args_needed = max(0, substr_count($query, '?') - substr_count($query, '\\?'));

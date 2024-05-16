@@ -23,7 +23,7 @@
     }
 
 // Channel history page?
-    if ($Path[2] == 'history') {
+    if (array_key_exists(2, $Path) && $Path[2] == 'history') {
         require_once 'modules/channel/history.php';
         exit;
     }
@@ -40,7 +40,8 @@
     $end = null;
 
 // Date?
-    if (preg_match('/^(\d+)-(\d+)-(\d+)(?::(\d+):(\d+)(?::(\d+))?)?$/', $Path[2], $match)) {
+    if (array_key_exists(2, $Path) &&
+        preg_match('/^(\d+)-(\d+)-(\d+)(?::(\d+):(\d+)(?::(\d+))?)?$/', $Path[2], $match)) {
         if (empty($match[4])) {
             $match[4] = 0;
             $match[5] = 0;
@@ -48,7 +49,8 @@
         if (empty($match[6]))
             $match[6] = 0;
         $start = mktime($match[4], $match[5], $match[6], $match[2], $match[3], $match[1]);
-        if (preg_match('/^(\d+)-(\d+)-(\d+)(?::(\d+):(\d+)(?::(\d+))?)?$/', $Path[3], $match)) {
+        if (array_key_exists(3, $Path) &&
+            preg_match('/^(\d+)-(\d+)-(\d+)(?::(\d+):(\d+)(?::(\d+))?)?$/', $Path[3], $match)) {
             if (empty($match[4])) {
                 $match[4] = 23;
                 $match[5] = 59;
