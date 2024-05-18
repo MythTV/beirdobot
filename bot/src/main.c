@@ -147,6 +147,15 @@ int main ( int argc, char **argv )
         close(2);
     }
 
+    /*
+     * Write out our pid number.
+     */
+    FILE* f = fopen("/var/lib/beirdobot/beirdobot.pid", "w");
+    if (f) {
+        fprintf(f, "%d\n", getpid());
+        fclose(f);
+    }
+
     mainThreadId = pthread_self();
 
     /* 
