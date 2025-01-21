@@ -159,7 +159,7 @@ Please set up the db_* environment variables correctly.
 
 // Is there a preferred skin?
     if (array_key_exists('skin', $_SESSION) &&
-        pfile_exists('skins/'.$_SESSION['skin'].'/img/') && !$_REQUEST['RESET_SKIN']) {
+        file_exists('skins/'.$_SESSION['skin'].'/img/') && !$_REQUEST['RESET_SKIN']) {
         define('skin', $_SESSION['skin']);
     }
     else {

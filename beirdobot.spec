@@ -1,6 +1,6 @@
 Name:		beirdobot
 Version:	0.6
-Release:	0%{?dist}
+Release:	1%{?dist}
 Summary:	BeirdoBot
 
 Group:		daemons
