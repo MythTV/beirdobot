@@ -161,7 +161,7 @@ class irc_channel {
             if (empty($start))
                 $start = 0;
         // Then we query everything
-            $sh = $db->query('SELECT *,
+            $sh = $db->query('SELECT nick,
                                      IF(SUM(IF(histType=2, -1, 1)) > 0, 1, 0) AS present
                                 FROM nickhistory
                                WHERE chanid = ?
