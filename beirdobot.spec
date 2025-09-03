@@ -1,5 +1,5 @@
 Name:		beirdobot
-Version:	0.6.3
+Version:	0.6.4
 Release:	0%{?dist}
 Summary:	BeirdoBot
 

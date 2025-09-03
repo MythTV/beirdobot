@@ -49,11 +49,11 @@ static char ident[] _UNUSED_ =
     "$Id$";
 
 /* 
- * 1h activity timeout for MySQL, ping the server if idle that long 
- * The code should check against the results of "SELECT @@wait_timeout" from
- * the server to make sure that we are delaying less time than the server is.
+ * activity timeout - ping the server if idle longer than this time.
+ * Check the results of "SELECT @@wait_timeout" from the server to
+ * make sure that we are delaying less time than the server is.
  * */
-#define MYSQL_PING_THRESHOLD    (60 * 60)
+int mysql_ping_threshold;
 
 typedef struct {
     MYSQL  *sql;
@@ -249,7 +249,7 @@ void *mysql_thread( void *arg )
             timeout = now.tv_sec - lastAccess;
             lastAccess = now.tv_sec;
 
-            if( timeout >= MYSQL_PING_THRESHOLD ) {
+            if( timeout >= mysql_ping_threshold ) {
                 LogPrint( LOG_NOTICE, "MySQL session idle for %ds, pinging",
                                       timeout );
                 connected = FALSE;
@@ -365,6 +365,21 @@ void db_setup(void)
     thread_create( &sqlThreadId, mysql_thread, NULL, "thread_mysql", NULL );
 }
 
+void db_set_mysql_timeout ()
+{
+    bool dummy1;
+    long dummy2;
+
+    MYSQL_RES *res = db_query( "SELECT @@wait_timeout;", NULL, 0, &dummy1, &dummy2);
+    if( res && mysql_num_rows(res) == 1) {
+        MYSQL_ROW row = mysql_fetch_row(res);
+        mysql_ping_threshold = atoi(row[0]);
+    } else {
+        mysql_ping_threshold = 60 * 60;
+    }
+    LogPrint( LOG_NOTICE, "TIMEOUTS: wait_timeout is %d", mysql_ping_threshold );
+}
+
 bool db_server_connect( MYSQL *mysql )
 {
     my_bool         my_true;
@@ -401,6 +416,8 @@ bool db_server_connect( MYSQL *mysql )
                        serverVers % 100 );
     LogPrint( LOG_CRIT, "MySQL server version %s", buf );
     versionAdd( "MySQL server", buf );
+
+    db_set_mysql_timeout();
 
     return( TRUE );
 }
