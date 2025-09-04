@@ -80,6 +80,7 @@ void db_check_schema( char *setting, char *desc, int codeSupports,
                       SchemaUpgrade_t *schemaUpgrade );
 void db_check_schema_main(void);
 void db_nick_history( IRCChannel_t *channel, char *nick, NickHistory_t type ); 
+void db_get_wait_timeout();
 AuthData_t *db_get_auth( char *nick );
 void db_set_auth( char *nick, AuthData_t *auth );
 void db_free_auth( AuthData_t *auth );

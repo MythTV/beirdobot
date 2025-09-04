@@ -49,11 +49,12 @@ static char ident[] _UNUSED_ =
     "$Id$";
 
 /* 
- * 1h activity timeout for MySQL, ping the server if idle that long 
- * The code should check against the results of "SELECT @@wait_timeout" from
- * the server to make sure that we are delaying less time than the server is.
+ * 1h default activity timeout for MySQL, ping the server if idle that long
+ * The code now uses the results of "SELECT @@wait_timeout" from the server
+ * to make sure that we are delaying less time than the server is.
  * */
-#define MYSQL_PING_THRESHOLD    (60 * 60)
+#define MYSQL_DEFAULT_PING_THRESHOLD    (60 * 60)
+int mysql_ping_threshold = MYSQL_DEFAULT_PING_THRESHOLD;
 
 typedef struct {
     MYSQL  *sql;
@@ -96,6 +97,8 @@ void result_get_setting( MYSQL_RES *res, MYSQL_BIND *input, void *arg,
                          long insertid );
 void result_get_auth( MYSQL_RES *res, MYSQL_BIND *input, void *arg,
                       long insertid );
+void result_get_wait_timeout( MYSQL_RES *res, MYSQL_BIND *input, void *arg,
+                              long insertid );
 void result_check_plugins( MYSQL_RES *res, MYSQL_BIND *input, void *arg,
                           long insertid );
 void result_MySQL_Schema( MYSQL_RES *res, MYSQL_BIND *input, void *arg,
@@ -209,7 +212,9 @@ QueryTable_t    QueryTable[] = {
     /* 29 */
     { "SELECT `chanid`, `nick`, `message`, `timestamp` FROM `irclog` "
       "WHERE `msgType` = 0 OR `msgType` = 1 "
-      "LIMIT ?, 1000000" , NULL, NULL, FALSE }
+      "LIMIT ?, 1000000" , NULL, NULL, FALSE },
+    /* 30 */
+    { "SELECT @@wait_timeout" , NULL, NULL, FALSE }
 };
 
 QueueObject_t   *QueryQ;
@@ -249,7 +254,7 @@ void *mysql_thread( void *arg )
             timeout = now.tv_sec - lastAccess;
             lastAccess = now.tv_sec;
 
-            if( timeout >= MYSQL_PING_THRESHOLD ) {
+            if( timeout >= mysql_ping_threshold ) {
                 LogPrint( LOG_NOTICE, "MySQL session idle for %ds, pinging",
                                       timeout );
                 connected = FALSE;
@@ -1087,6 +1092,12 @@ void db_set_setting( char *name, char *format, ... )
     bind_string( &data[1], value, MYSQL_TYPE_VAR_STRING );
 
     db_queue_query( 14, QueryTable, data, 2, NULL, NULL, NULL);
+}
+
+void db_get_wait_timeout ()
+{
+    /* Get the server's wait_timeout */
+    db_queue_query( 30, QueryTable, NULL, 0, result_get_wait_timeout, NULL, NULL );
 }
 
 AuthData_t *db_get_auth( char *nick )
@@ -2103,6 +2114,21 @@ void result_get_setting( MYSQL_RES *res, MYSQL_BIND *input, void *arg,
     *valuep = value;
 }
 
+
+void result_get_wait_timeout( MYSQL_RES *res, MYSQL_BIND *input, void *arg,
+                              long insertid )
+{
+    MYSQL_ROW       row;
+
+    if( !res || (mysql_num_rows(res) != 1) ) {
+        mysql_ping_threshold = MYSQL_DEFAULT_PING_THRESHOLD;
+        return;
+    }
+
+    row = mysql_fetch_row(res);
+    mysql_ping_threshold = atoi(row[0]);
+    LogPrint( LOG_NOTICE, "Server wait_timeout is %d", mysql_ping_threshold );
+}
 
 void result_get_auth( MYSQL_RES *res, MYSQL_BIND *input, void *arg, 
                       long insertid )
