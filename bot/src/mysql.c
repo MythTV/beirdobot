@@ -272,7 +272,10 @@ void *mysql_thread( void *arg )
                                                    " reconnecting." );
                         versionRemove( "MySQL client" );
                         versionRemove( "MySQL server" );
+                        /* The server dropped us.  Re-init our end. */
+                        mysql_init( protItem->sql );
                         connected = db_server_connect( protItem->sql );
+                        db_get_wait_timeout();
                     }
 
                     if( !connected ) {
