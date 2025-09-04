@@ -372,7 +372,6 @@ void db_setup(void)
 
 bool db_server_connect( MYSQL *mysql )
 {
-    my_bool         my_true;
     unsigned long   serverVers;
     static char     buf[30];
 
@@ -385,14 +384,6 @@ bool db_server_connect( MYSQL *mysql )
                            mysql_error(mysql) );
         return( FALSE );
     }
-
-#ifdef MYSQL_OPT_RECONNECT
-    /* Only defined in MySQL 5.0.13 and above, before that, it was always on */
-    my_true = TRUE;
-    mysql_options( mysql, MYSQL_OPT_RECONNECT, &my_true );
-#else
-    (void)my_true;
-#endif
 
     snprintf( buf, 30, "%d.%d.%d", MYSQL_VERSION_ID / 10000,
                        (MYSQL_VERSION_ID / 100 ) % 100, 
