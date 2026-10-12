@@ -28,10 +28,9 @@
 #include "environment.h"
 #include "clucene.h"
 #include <CLucene.h>
-#include <CLucene/config/repl_tchar.h>
-#include <CLucene/util/Misc.h>
 #include <string.h>
 #include <stdlib.h>
+#include <wchar.h>
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
@@ -49,6 +48,49 @@ using namespace lucene::store;
 using namespace lucene::queryParser;
 using namespace lucene::document;
 using namespace lucene::search;
+
+/*
+ * These used to come from CLucene's internal repl_tchar.h and util/Misc.h,
+ * which the system clucene-core-devel package does not install.  Same
+ * byte-for-byte conversions as Misc::_wideToChar()/_cpycharToWide(), but
+ * the dup uses malloc() to match the free() at the call site, and the
+ * copy always NUL-terminates.
+ */
+#ifndef _sntprintf
+#define _sntprintf swprintf
+#endif
+
+static char *tchar_to_ascii_dup( const TCHAR *s )
+{
+    size_t      len = wcslen( s );
+    size_t      i;
+    char       *d = (char *)malloc( len + 1 );
+
+    if( !d ) {
+        return( NULL );
+    }
+    for( i = 0; i <= len; i++ ) {
+        d[i] = (char)((unsigned short)s[i] & 0xFF);
+    }
+    return( d );
+}
+#define STRDUP_TtoA(s)          tchar_to_ascii_dup(s)
+
+#ifndef WEBSERVICE
+static void ascii_to_tchar_cpy( TCHAR *d, const char *s, size_t len )
+{
+    size_t      i;
+
+    if( !len ) {
+        return;
+    }
+    for( i = 0; i + 1 < len && s[i]; i++ ) {
+        d[i] = s[i];
+    }
+    d[i] = 0;
+}
+#define STRCPY_AtoT(d, s, len)  ascii_to_tchar_cpy(d, s, len)
+#endif
 
 static char ident[] _UNUSED_= 
     "$Id$";

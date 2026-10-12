@@ -7265,6 +7265,18 @@ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ex
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 #AC_CHECK_LIB_PROG([clucene], [_lucene_shutdown();],,[AC_MSG_ERROR(libclucene not installed)],,[#include <CLucene.h>])
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for system libclucene-core" >&5
+printf %s "checking for system libclucene-core... " >&6; }
+if pkg-config --exists libclucene-core
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+else case e in #(
+  e) { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+       as_fn_error $? "libclucene-core not installed (clucene-core-devel)" "$LINENO" 5 ;;
+esac
+fi
 
 # Checks for libraries.
 ac_ext=c

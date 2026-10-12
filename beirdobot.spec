@@ -13,13 +13,15 @@ URL:		https://github.com/MythTV/beirdobot
 Source0:	beirdobot-%{version}.tar.gz
 
 BuildRequires:  gcc, gcc-c++
-BuildRequires:  automake, cmake
+BuildRequires:  automake
 BuildRequires:  curl-devel
 BuildRequires:  pcre2-devel
 BuildRequires:  mariadb-devel
 BuildRequires:  mysql-libs
 BuildRequires:  ncurses-devel
 BuildRequires:  glibc-devel
+BuildRequires:  clucene-core-devel
+BuildRequires:  pkgconf-pkg-config
 
 Requires(post): systemd
 Requires(preun): systemd
@@ -33,9 +35,6 @@ BeirdoBot IRC logger
 
 %prep
 %setup -q
-#pushd bot/src/clucene
-#%patch0 -p0
-#popd
 
 %build
 aclocal

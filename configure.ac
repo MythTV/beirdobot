@@ -138,6 +138,11 @@ AS_VAR_POPDEF([ac_Lib])
 # Check for C++ libraries
 AC_LANG([C++])
 #AC_CHECK_LIB_PROG([clucene], [_lucene_shutdown();],,[AC_MSG_ERROR(libclucene not installed)],,[#include <CLucene.h>])
+AC_MSG_CHECKING([for system libclucene-core])
+AS_IF([pkg-config --exists libclucene-core],
+      [AC_MSG_RESULT([yes])],
+      [AC_MSG_RESULT([no])
+       AC_MSG_ERROR([libclucene-core not installed (clucene-core-devel)])])
 
 # Checks for libraries.
 AC_LANG([C])
