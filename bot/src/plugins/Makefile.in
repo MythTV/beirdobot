@@ -15,7 +15,7 @@ datadir		= @datadir@
 pkglibdir	= ${datadir}/beirdobot
 plugindir	= ${pkglibdir}/plugins
 
-CFLAGS	= -O6 -g -Wall -I../../include -std=c99 -pedantic
+CFLAGS	= -O6 -g -Wall -Wno-error=stringop-truncation -I../../include -std=c99 -pedantic
 # -DDEBUG
 CFLAGS	+= $(shell ${MYSQLCFG} --cflags)
 CFLAGS  += $(shell ${BOTNETCFG} --cflags)

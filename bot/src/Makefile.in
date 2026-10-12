@@ -10,7 +10,7 @@ PKGCONFIGPATH	= ../lib/pkgconfig
 CC	= @CC@
 CXX	= @CXX@
 
-CFLAGS	= -O6 -g -Wall -Werror -I../include -std=c99 -pedantic -Wno-long-long
+CFLAGS	= -O6 -g -Wall -Werror -Wno-error=stringop-truncation -I../include -std=c99 -pedantic -Wno-long-long
 # -DDEBUG
 CFLAGS  += $(shell ${BOTNETCFG} --cflags)
 CFLAGS  += $(shell ${MYSQLCFG} --cflags)
@@ -20,7 +20,7 @@ CFLAGS_plugin_api = -DPLUGIN_PATH=\"${plugindir}\" -Wno-strict-aliasing
 CFLAGS_main  = $(shell ${CURLCFG} --cflags) -DCFLAGS="\"${CFLAGS}\""
 CFLAGS_main += -DLDFLAGS="\"${LDFLAGS}\""
 
-CXXFLAGS  = -O6 -g -Wall -Werror -I../include -pedantic -Wno-long-long
+CXXFLAGS  = -O6 -g -Wall -Werror -Wno-error=stringop-truncation -I../include -pedantic -Wno-long-long
 CXXFLAGS += -Wno-variadic-macros
 CXXFLAGS += $(shell ${MYSQLCFG} --cflags)
 CXXFLAGS_clucene  = -DCLUCENE_INDEX_DIR=\"${indexdir}\" -I./clucene/src/core

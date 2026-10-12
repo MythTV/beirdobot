@@ -1,3 +1,7 @@
+# GCC15 defaults to -std=gnu23, where 'bool' is a keyword.  Force this
+# to gnu17 to prevent rewriting legacy code.
+%global optflags %{optflags} -std=gnu17 -Wno-error=stringop-truncation
+
 Name:		beirdobot
 Version:	0.6.5
 Release:	0%{?dist}

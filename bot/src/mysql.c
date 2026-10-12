@@ -447,7 +447,7 @@ MYSQL_RES *db_query( const char *query, MYSQL_BIND *args, int arg_count,
 {
     MYSQL_RES      *res;
     MysqlData_t    *item;
-    char           *insert;
+    const char     *insert;
     int             buflen;
     int             len;
     int             count;
