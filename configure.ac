@@ -141,7 +141,7 @@ AC_LANG([C++])
 
 # Checks for libraries.
 AC_LANG([C])
-AC_CHECK_LIB([pcre], [pcre_config],,[AC_MSG_ERROR(libpcre not installed)])
+AC_CHECK_LIB([pcre2-8], [pcre2_config_8],,[AC_MSG_ERROR(libpcre2-8 not installed)])
 MYSQL_CLIENT([5.0.0])
 AC_CHECK_LIB([mysqlclient], [mysql_query],,
              [AC_MSG_ERROR(libmysqlclient not intalled)],[$MYSQL_CLIENT_LIBS])

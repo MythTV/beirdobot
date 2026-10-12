@@ -15,7 +15,7 @@ Source0:	beirdobot-%{version}.tar.gz
 BuildRequires:  gcc, gcc-c++
 BuildRequires:  automake, cmake
 BuildRequires:  curl-devel
-BuildRequires:  pcre-devel
+BuildRequires:  pcre2-devel
 BuildRequires:  mariadb-devel
 BuildRequires:  mysql-libs
 BuildRequires:  ncurses-devel

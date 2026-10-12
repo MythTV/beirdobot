@@ -3,7 +3,7 @@ EMPTY_AUTOMAKE_TARGETS += ps info html tags ctags distdir
 
 BOTNETCFG	= ../bin/botnet-config
 MYSQLCFG	= mysql_config
-PCRECFG		= pcre-config
+PCRE2CFG	= pcre2-config
 CURLCFG		= curl-config
 PKGCONFIGPATH	= ../lib/pkgconfig
 
@@ -15,7 +15,7 @@ CFLAGS	= -O6 -g -Wall -Werror -Wno-error=stringop-truncation -I../include -std=c
 CFLAGS  += $(shell ${BOTNETCFG} --cflags)
 CFLAGS  += $(shell ${MYSQLCFG} --cflags)
 
-CFLAGS_regexp = $(shell ${PCRECFG} --cflags)
+CFLAGS_regexp = $(shell ${PCRE2CFG} --cflags)
 CFLAGS_plugin_api = -DPLUGIN_PATH=\"${plugindir}\" -Wno-strict-aliasing
 CFLAGS_main  = $(shell ${CURLCFG} --cflags) -DCFLAGS="\"${CFLAGS}\""
 CFLAGS_main += -DLDFLAGS="\"${LDFLAGS}\""
@@ -33,7 +33,7 @@ LDFLAGS = -g -rdynamic
 
 LIBS	= $(shell ${MYSQLCFG} @MYSQL_LIBS@)
 LIBS   += $(shell ${BOTNETCFG} --libs-static)
-LIBS   += $(shell ${PCRECFG} --libs)
+LIBS   += $(shell ${PCRE2CFG} --libs8)
 LIBS   += $(shell ${CURLCFG} --libs)
 LIBS   += -ldl -L../lib -lopie -lmenu -lform -lncurses -lstdc++
 LIBS   += -lclucene-core-static -lclucene-shared-static

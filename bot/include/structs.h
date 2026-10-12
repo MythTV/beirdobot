@@ -28,7 +28,10 @@
 #define structs_h_
 
 #include <pthread.h>
-#include <pcre.h>
+#ifndef PCRE2_CODE_UNIT_WIDTH
+#define PCRE2_CODE_UNIT_WIDTH 8
+#endif
+#include <pcre2.h>
 #include <mysql.h>
 #include "botnet.h"
 #include "environment.h"
@@ -157,10 +160,8 @@ typedef struct {
     LinkedListItem_t    item;
     const char         *channelRegexp;
     const char         *contentRegexp;
-    pcre               *reChannel;
-    pcre_extra         *peChannel;
-    pcre               *reContent;
-    pcre_extra         *peContent;
+    pcre2_code         *reChannel;
+    pcre2_code         *reContent;
     RegexpFunc_t        func;
     void               *tag;
 } Regexp_t;

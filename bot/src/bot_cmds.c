@@ -30,7 +30,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pcre.h>
 #include "botnet.h"
 #include "structs.h"
 #include "protos.h"
@@ -179,9 +178,12 @@ void regexpBotCmdParse( IRCServer_t *server, IRCChannel_t *channel, char *who,
 {
     char               *message;
 
-    pcre_get_substring( msg, ovector, ovecsize, 1, (const char **)&message );
+    message = regexp_substring( msg, ovector, ovecsize, 1 );
+    if( !message ) {
+        return;
+    }
     botCmd_parse( server, channel, who, message );
-    pcre_free_substring( message );
+    free( message );
 }
 
 int botCmd_parse( IRCServer_t *server, IRCChannel_t *channel, char *who, 
