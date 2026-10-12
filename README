@@ -17,6 +17,13 @@ yum install cmake autoconf automake
 (NOTE: this build had several plugins disabled -- luascript, mailbox, perl,
 rssfeed, trac)
 
+Test compiling:
+mkdir -p /tmp/rpmsrc
+git archive --format=tar.gz --prefix=beirdobot-0.6.6/ -o /tmp/rpmsrc/beirdobot-0.6.6.tar.gz "$(git stash create | grep . || echo HEAD)"
+cp beirdobot.spec /tmp/rpmsrc/
+mock -r fedora-45-x86_64 --spec /tmp/rpmsrc/beirdobot.spec --sources /tmp/rpmsrc --resultdir /tmp/rpmout
+
+
 After install (use appropriate user/group info):
 chown -R botuser.botgroup /usr/share/beirdobot/clucene
 

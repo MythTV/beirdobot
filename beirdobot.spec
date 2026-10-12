@@ -3,7 +3,7 @@
 %global optflags %{optflags} -std=gnu17 -Wno-error=stringop-truncation
 
 Name:		beirdobot
-Version:	0.6.5
+Version:	0.6.6
 Release:	0%{?dist}
 Summary:	BeirdoBot
 
